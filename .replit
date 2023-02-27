@@ -1,4 +1,5 @@
 entrypoint = "index.js"
+run = "node index.js"
 
 hidden = [".config", "package-lock.json"]
 

@@ -29,4 +29,4 @@ client.on("ready", () => {
   })
 })
 
-client.login("MTA3OTgwNjIxNjA0MzI0MTU0Mg.GSWx9J.dzlf8Y6w4RWwDivTEsJRfyRMZae7_xHJnvQvCs")
+client.login(process.env['Token'])

@@ -1,41 +1,32 @@
-const path = require('path')
 const { Client, IntentsBitField, Partials } = require("discord.js")
-const wokcommands = require('wokcommands')
-const keepAlive = require('./server.js')
+const { DefaultCommands } = require("wokcommands")
+const WOK = require("wokcommands")
+const path = require("path")
 
-const config = require('./config.json')
+const config = require("./config.json")
 
 const client = new Client({
-  intents: [
-    IntentsBitField.Flags.Guilds,
-    IntentsBitField.Flags.GuildMessages,
-    IntentsBitField.Flags.DirectMessages,
-    IntentsBitField.Flags.MessageContent,
-  ],
+  intents: [IntentsBitField.Flags.Guilds, IntentsBitField.Flags.GuildMessages, IntentsBitField.Flags.DirectMessages, IntentsBitField.Flags.MessageContent],
   partials: [Partials.Channel],
 })
 
-client.on('ready', () => {
-  client.user.setActivity("SUBNAUTICA", { type: "PLAYING" })
-
-  new wokcommands({
+client.on("ready", () => {
+  console.log("Ready!")
+  new WOK({
     client,
-    youtubeDL: false,
-    showWarns: false,
-    commandsDir: path.join(__dirname, 'commands'),
-    //featuresDir: path.join(__dirname, 'features'),
-    testServers: ['1079807641896890488'],
+    commandsDir: path.join(__dirname, "commands"),
+    events: {dir: path.join(__dirname, "events")},
+    testServers: [config.testServer],
+    botOwners: [config.ownerID, config.xyzyxID],
     disabledDefaultCommands: [
-      'command',
-      'language',
-      'prefix',
-      'requiredrole',
-      'channelonly'
+      DefaultCommands.ChannelCommand,
+      DefaultCommands.CustomCommand,
+      DefaultCommands.Prefix,
+      DefaultCommands.RequiredPermissions,
+      DefaultCommands.RequiredRoles,
+      DefaultCommands.ToggleCommand
     ],
-    botOwners: [config.ownerID],
   })
-
 })
 
-client.login(process.env['Token'])
-keepAlive()
+client.login("MTA3OTgwNjIxNjA0MzI0MTU0Mg.GSWx9J.dzlf8Y6w4RWwDivTEsJRfyRMZae7_xHJnvQvCs")

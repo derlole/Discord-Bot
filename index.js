@@ -1,4 +1,8 @@
-const { Client, IntentsBitField, Partials } = require("discord.js")
+const {
+  Client,
+  IntentsBitField,
+  Partials,
+} = require("discord.js")
 const { DefaultCommands } = require("wokcommands")
 const WOK = require("wokcommands")
 const path = require("path")
@@ -6,7 +10,13 @@ const path = require("path")
 const config = require("./config.json")
 
 const client = new Client({
-  intents: [IntentsBitField.Flags.Guilds, IntentsBitField.Flags.GuildMessages, IntentsBitField.Flags.DirectMessages, IntentsBitField.Flags.MessageContent],
+  intents: [
+    IntentsBitField.Flags.Guilds,
+    IntentsBitField.Flags.GuildMessages,
+    IntentsBitField.Flags.DirectMessages,
+    IntentsBitField.Flags.MessageContent,
+    IntentsBitField.Flags.GuildMessageReactions,
+  ],
   partials: [Partials.Channel],
 })
 
@@ -15,7 +25,10 @@ client.on("ready", () => {
   new WOK({
     client,
     commandsDir: path.join(__dirname, "commands"),
-    events: {dir: path.join(__dirname, "events")},
+    featuresDir: path.join(__dirname, "features"),
+    events: {
+      dir: path.join(__dirname, "events"),
+    },
     testServers: [config.testServer],
     botOwners: [config.ownerID, config.xyzyxID],
     disabledDefaultCommands: [
@@ -24,9 +37,9 @@ client.on("ready", () => {
       DefaultCommands.Prefix,
       DefaultCommands.RequiredPermissions,
       DefaultCommands.RequiredRoles,
-      DefaultCommands.ToggleCommand
+      DefaultCommands.ToggleCommand,
     ],
   })
 })
 
-client.login(process.env['Token'])
+client.login("MTA4MDA2NzY3MDU2Njc2NDU0NA.GEG-g8.pMF8_T6bYKVRD0oe_76kOWA2YbjD_0AWuySROA"/*process.env["Token"]*/)

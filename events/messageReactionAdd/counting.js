@@ -7,4 +7,4 @@ module.exports = (messageReaction, instance) => {
     console.log("geht")
     messageReaction.message.reply("Das war jetzt schon schlecht")
   }
-}
+} 

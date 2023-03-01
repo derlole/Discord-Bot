@@ -29,7 +29,7 @@ client.on("ready", () => {
     events: {
       dir: path.join(__dirname, "events"),
     },
-    testServers: [config.testServer],
+    testServers: [config.testServer, config.hiServer],
     botOwners: [config.ownerID, config.xyzyxID],
     disabledDefaultCommands: [
       DefaultCommands.ChannelCommand,

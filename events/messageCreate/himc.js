@@ -1,5 +1,6 @@
 module.exports = (message, instance) => {
-  if (message.content === "mc" && message.channel.id === "849906014030659604") {
-    message.reply("Minecraft ist toll und sollte auf jedem Gerät Installiert und gespielt werden!")
+  if (message.content.includes ("Minecraft") && message.guild.id === "849905679271329803"
+      ) {
+    message.reply("Das ist tolles Spiel und sollte auf jedem Gerät Installiert und gespielt werden!")
   }
 }

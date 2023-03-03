@@ -7,6 +7,7 @@ const { DefaultCommands } = require("wokcommands")
 const WOK = require("wokcommands")
 const path = require("path")
 
+const keepAlive = require("./server.js")
 const config = require("./config.json")
 
 const client = new Client({
@@ -43,3 +44,4 @@ client.on("ready", () => {
 })
 
 client.login(process.env["Token"])
+keepAlive()

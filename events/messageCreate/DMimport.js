@@ -24,10 +24,18 @@ module.exports = async(message, instance) => {
       user.send(message.content)
     console.log("Nachricht an Justus geschickt")
   }
-
-  //Freundliche (nicht) Person
-  /*if (message.channel.id == '1080867858365546528' && message.author.username === "derlole") {
-    message.client.users.cache.get('786577263482241054').send(message.content)
-    console.log("Nachricht an Freundlich Person geschickt")
+  
+  //tiggy
+  if (message.channel.id == '1081119218050809947' && message.author.username === "derlole") {
+    const user = await message.client.users.fetch('714895941269979259');
+      user.send(message.content)
+    console.log("Nachricht an Tiggy geschickt")
+  }
+  //Blue
+  /*if (message.channel.id == '1081119218050809947' && message.author.username === "derlole") {
+    const user = await message.client.users.fetch('714895941269979259');
+      user.send(message.content)
+    console.log("Nachricht an Tiggy geschickt")
   }*/
+
 }

@@ -1,8 +1,4 @@
-const {
-  Client,
-  IntentsBitField,
-  Partials,
-} = require("discord.js")
+const { Client, IntentsBitField, Partials } = require("discord.js")
 const { DefaultCommands } = require("wokcommands")
 const WOK = require("wokcommands")
 const path = require("path")
@@ -21,7 +17,7 @@ const client = new Client({
   partials: [Partials.Channel],
 })
 
-client.on("ready", () => {
+client.on("ready", async () => {
   console.log("Ready!")
   new WOK({
     client,
@@ -43,5 +39,5 @@ client.on("ready", () => {
   })
 })
 
-client.login(process.env["Token"])
+client.login("MTA4MDA2NzY3MDU2Njc2NDU0NA.GubOwn.-HNy1KIDgbRmAlEa4ZyTuGpvRVTWZfWT8OaJ8c" || process.env["Token"])
 keepAlive()

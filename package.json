@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +15,7 @@
     "discord.js": "^14.7.1",
     "express": "^4.18.2",
     "node-fetch": "^3.2.6",
+    "nodemon": "^2.0.21",
     "wokcommands": "^2.1.0"
   }
 }

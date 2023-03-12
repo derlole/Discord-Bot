@@ -26,7 +26,7 @@ module.exports = {
       name: "importance",
       description: "how important is this reminder?",
       type: 3,
-      required: true,
+      required: false,
     },
   ],
 

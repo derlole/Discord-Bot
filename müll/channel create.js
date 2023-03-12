@@ -9,7 +9,7 @@ module.exports =  async(message, instance) => {
     targetGuild.channels.create({
       name: "neuer kanal",
       type: ChannelType.GuildText,
-      parent: 1079807642639290508
+      parent: '1079807642639290508'
     })
     .then((channel) => {
         message.channel.send('Neuer Kanal wurde erstellt!')

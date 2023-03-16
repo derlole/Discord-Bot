@@ -33,5 +33,5 @@ module.exports = (message, instance) => {
       }
     }, 1000);
     
-  }
+  } 
 }

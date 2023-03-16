@@ -3,6 +3,7 @@ const { DefaultCommands } = require("wokcommands")
 const WOK = require("wokcommands")
 const path = require("path")
 
+require('dotenv').config()
 const keepAlive = require("./server.js")
 const config = require("./config.json")
 

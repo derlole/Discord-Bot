@@ -39,5 +39,5 @@ client.on("ready", async () => {
   })
 })
 
-client.login("MTA4MDA2NzY3MDU2Njc2NDU0NA.GubOwn.-HNy1KIDgbRmAlEa4ZyTuGpvRVTWZfWT8OaJ8c" || process.env["Token"])
+client.login(process.env.TOKEN || process.env["Token"])
 keepAlive()

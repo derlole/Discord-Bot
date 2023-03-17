@@ -1,7 +1,11 @@
 const { CommandType } = require("wokcommands")
 const { EmbedBuilder } = require('discord.js');
-const spotify = require('.././songdata0.json').push(...require('.././songdata1.json'));
-
+const spotifyEins = require('.././songdata0.json')
+const spotifyZwei = require('.././songdata1.json')
+const spotifyDrei = require('.././songdata2.json')
+const spotifyVier = require('.././songdata3.json')
+const spotify = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier)
+console.log(spotify.length)
 function formatMilliseconds(milliseconds) {
   if (!milliseconds) return 'no wert bruder'
   let seconds = Math.floor(milliseconds / 1000) % 60
@@ -20,9 +24,10 @@ module.exports = {
     const songnubmer = args[0];
     console.log(songnubmer);
     if (!songnubmer) return 'Please provide a song number';
-    if (isNaN(songnubmer)) return 'Please provide a valid number';
-    if (songnubmer < 0) return 'Fick Dich xD';
-    if (songnubmer > spotify.length) return 'geh dich löschen';
+    if (isNaN(songnubmer)) return 'Please to be not an idiot';
+    if (songnubmer < 0) return 'Please provide to be not an idiot';
+    if (songnubmer > spotify.length - 1) return 'Please provide a valid number for the songs';
+    //if(!Number.isInteger(songnubmer)) return 'jetz halts maul du Wixer';
     const embed = new EmbedBuilder()
     .setTitle(`Required Song ${songnubmer}`)
     .setColor('#ff00ff')

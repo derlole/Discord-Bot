@@ -22,4 +22,4 @@ module.exports =  async (message, client, instance) => {
     )
    await logChannel.send({embeds: [embed]});
   }
-}
+} 

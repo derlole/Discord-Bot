@@ -1,6 +1,6 @@
 const { CommandType } = require("wokcommands")
 const { EmbedBuilder } = require('discord.js');
-const spotify = require('.././songdata0.json');
+const spotify = require('.././songdata0.json').push(...require('.././songdata1.json'));
 
 function formatMilliseconds(milliseconds) {
   if (!milliseconds) return 'no wert bruder'

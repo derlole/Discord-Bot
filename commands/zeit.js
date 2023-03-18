@@ -4,9 +4,7 @@ const spotifyEins = require('.././songdata0.json')
 const spotifyZwei = require('.././songdata1.json')
 const spotifyDrei = require('.././songdata2.json')
 const spotifyVier = require('.././songdata3.json');
-//const song = require("./song");
-const spotify = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier)
-console.log(spotify.length)
+const spotify = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier);
 /*function formatMilliseconds(milliseconds) {
   if (!milliseconds) return 'no wert bruder'
   let seconds = Math.floor(milliseconds / 1000) % 60
@@ -39,7 +37,7 @@ module.exports = {
         clearInterval(intervalId);
         
     }
-    },10);
+    },1);
     const embed = new EmbedBuilder()
         .setTitle(`Playtime`)
         .addFields(

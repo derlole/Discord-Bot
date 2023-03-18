@@ -4,7 +4,7 @@ const spotifyEins = require('.././songdata0.json')
 const spotifyZwei = require('.././songdata1.json')
 const spotifyDrei = require('.././songdata2.json')
 const spotifyVier = require('.././songdata3.json');
-const song = require("./song");
+//const song = require("./song");
 const spotify = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier)
 console.log(spotify.length)
 /*function formatMilliseconds(milliseconds) {

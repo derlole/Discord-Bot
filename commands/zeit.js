@@ -25,7 +25,7 @@ module.exports = {
     
     var songnumber = 0;
     const track = args[0];
-    var time = 0;
+    let time = 0;
     //if (!songnumber) return 'Please provide a song number';
     if (isNaN(songnumber)) return 'Please to be not an idiot';
     if (songnumber < 0) return 'Please provide to be not an idiot';

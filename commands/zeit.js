@@ -43,7 +43,7 @@ module.exports = {
         .addFields(
             {
                 name: "Total Playtime",
-                value: "Zeit: " + time + " ms",
+                value: "Zeit: " + time.toString() + " ms",
             }
         )
         .setColor('#ff00ff')

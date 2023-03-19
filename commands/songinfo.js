@@ -14,9 +14,13 @@ module.exports = {
     expectedArgs: "<song-number>",
     ownerOnly: true,
     callback: ({ args, message, channel }) => {
-        let songnumber = 0;
         const track = args[0];
+        let songnumber = 0;
         let songplayes = 0;
+        let skipped = 0;
+        let notSkipped = 0;
+        let notListend = 0;
+        let playtime = 0;
         const totalsongnumber = spotify.length - 1;
 
         const intervalId = setInterval(() => {
@@ -25,18 +29,53 @@ module.exports = {
                 if (song && song.master_metadata_track_name && track === song.master_metadata_track_name.replace(/\s+/g, "-")) {
                     songplayes++;
                     console.log(songplayes);
+                    if (song.skipped) {
+                        skipped++;
+                    }
+                    else {
+                        notSkipped++;
+                    }
+                    if (song.ms_played === 0) {
+                        notListend++;
+                    }
+                    if (song.ms_played > 0) {
+                        playtime = playtime + song.ms_played;
+                    }
                 }
                 songnumber++;
 
             } else {
                 clearInterval(intervalId);
                 const embed = new EmbedBuilder()
-                    .setTitle(`Playtimes of ${track}`)
+                    .setTitle(`Statistics of ${track}`)
                     .addFields(
                         {
                             name: "Number of Plays:",
                             value: songplayes.toString(),
+                        },
+                        {
+                            name: "Number of Skips:",
+                            value: skipped.toString(),
+                        },
+                        {
+                            name: "Number of Listend trough:",
+                            value: notSkipped.toString(),
+                            inliene: true,
+                        },
+                        {
+                            name: "Number of O seconds Listening:",
+                            value: notListend.toString(),
+                            inliene: true,
+                        },
+                        {
+                            name: "Total Playtime:",
+                            value: playtime.toString() + " ms",
+                        },
+                        {
+                            name: "Average Skipperate:",
+                            value: (skipped / songplayes*100).toString() + " %",
                         }
+
                     )
                     .setColor('#ff00ff');
                 message.channel.send({embeds: [embed]});

@@ -21,6 +21,8 @@ module.exports = {
         let notSkipped = 0;
         let notListend = 0;
         let playtime = 0;
+        let shuffle = 0;
+        let offline = 0;
         const totalsongnumber = spotify.length - 1;
 
         const intervalId = setInterval(() => {
@@ -41,6 +43,12 @@ module.exports = {
                     if (song.ms_played > 0) {
                         playtime = playtime + song.ms_played;
                     }
+                    if (song.offline) {
+                        offline++;
+                    }
+                    if (song.shuffle) {
+                        shuffle++;
+                    }
                 }
                 songnumber++;
 
@@ -58,22 +66,30 @@ module.exports = {
                             value: skipped.toString(),
                         },
                         {
-                            name: "Number of Listend trough:",
+                            name: "Number of Listned through:",
                             value: notSkipped.toString(),
-                            inliene: true,
+                            //inliene: true,
                         },
                         {
                             name: "Number of O seconds Listening:",
                             value: notListend.toString(),
-                            inliene: true,
+                            //inliene: true,
                         },
                         {
                             name: "Total Playtime:",
                             value: playtime.toString() + " ms",
                         },
                         {
-                            name: "Average Skipperate:",
-                            value: (skipped / songplayes*100).toString() + " %",
+                            name: "Average skip rate:",
+                            value: `${Math.round(skipped / songplayes*100*100)/100} %`,
+                        },
+                        {
+                            name: "Offline Streams:",
+                            value: `**${offline.toString()}**\n${Math.round(offline.toString()/songplayes*100*100)/100} %`,
+                        },
+                        {
+                            name: "Shuffle Streams:",
+                            value:  `**${shuffle.toString()}**\n${Math.round(shuffle.toString()/songplayes*100*100)/100} %`,
                         }
 
                     )

@@ -41,7 +41,7 @@ module.exports = {
                         notListend++;
                     }
                     if (song.ms_played > 0) {
-                        playtime = playtime + song.ms_played;
+                        playtime += song.ms_played;
                     }
                     if (song.offline) {
                         offline++;
@@ -90,7 +90,7 @@ module.exports = {
                         {
                             name: "Shuffle Streams:",
                             value:  `**${shuffle.toString()}**\n${Math.round(shuffle.toString()/songplayes*100*100)/100} %`,
-                        }
+                        },
 
                     )
                     .setColor('#ff00ff');

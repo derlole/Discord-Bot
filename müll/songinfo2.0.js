@@ -6,6 +6,30 @@ const spotifyDrei = require('../songdata2.json')
 const spotifyVier = require('../songdata3.json');
 const spotify = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier);
 
+const getData = (songName) => {
+  let data = {
+    songplayes: 0,
+    skipped: 0,
+    notSkipped: 0,
+    notListened: 0,
+    playtime: 0,
+    playtime: 0,
+    shuffle: 0,
+    offline: 0,
+  }
+  spotify.forEach(song => {
+    if (song && song.master_metadata_track_name && track === song.master_metadata_track_name.replace(/\s+/g, "-")) {
+      data.songplayes++
+      song.skipped ? data.skipped++ : data.notSkipped++
+      if (song.ms_played === 0) data.notListened++
+      if (song.ms_played > 0) data.playtime = data.playtime + song.ms_played
+      if (song.offline) data.offline++
+      if (song.shuffle) data.shuffle++
+    }
+  })
+  return data
+}
+
 module.exports = {
     description: 'Give number of plays up to an specific song',
     type: CommandType.LEGACY,
@@ -14,47 +38,13 @@ module.exports = {
     expectedArgs: "<song-number>",
     ownerOnly: true,
     callback: ({ args, message, channel }) => {
-        const track = args[0];
-        let songnumber = 0;
-        let songplayes = 0;
-        let skipped = 0;
-        let notSkipped = 0;
-        let notListend = 0;
-        let playtime = 0;
-        let shuffle = 0;
-        let offline = 0;
-        const totalsongnumber = spotify.length - 1;
-
-        const intervalId = setInterval(() => {
-            if (totalsongnumber > songnumber) {
-                const song = spotify[songnumber];
-                if (song && song.master_metadata_track_name && track === song.master_metadata_track_name.replace(/\s+/g, "-")) {
-                    songplayes++;
-                    console.log(songplayes);
-                    song.skipped ? skipped++ : notSkipped++
-                    if (song.ms_played === 0) {
-                        notListend++;
-                    }
-                    if (song.ms_played > 0) {
-                        playtime += song.ms_played;
-                    }
-                    if (song.offline) {
-                        offline++;
-                    }
-                    if (song.shuffle) {
-                        shuffle++;
-                    }
-                }
-                songnumber++;
-
-            } else {
-                clearInterval(intervalId);
-                const embed = new EmbedBuilder()
+      const track = args[0]
+      const embed = new EmbedBuilder()
                     .setTitle(`Statistics of ${track}`)
                     .addFields(
                         {
                             name: "Number of Plays:",
-                            value: songplayes.toString(),
+                            value: .toString(),
                         },
                         {
                             name: "Number of Skips:",
@@ -89,8 +79,6 @@ module.exports = {
 
                     )
                     .setColor('#ff00ff');
-                message.channel.send({embeds: [embed]});
-            }
-        }, 1);
+      return { embeds: embed }
     }
 }

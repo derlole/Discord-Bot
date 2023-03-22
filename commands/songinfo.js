@@ -55,7 +55,7 @@ module.exports = {
                   value: data.notSkipped.toString(),
               },
               {
-                  name: "Number of O seconds Listening:",
+                  name: "Number of 0 seconds Listening:",
                   value: data.notListened.toString(),
               },
               {
@@ -79,4 +79,4 @@ module.exports = {
         channel.send({ embeds: [embed] })
       })
     }
-}
+  }

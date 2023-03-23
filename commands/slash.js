@@ -4,6 +4,7 @@ const { EmbedBuilder } = require("discord.js")
 module.exports = {
   description: "show and delete your slash commands",
   type: CommandType.SLASH,
+  ownerOnly: true,
   options: [
     {
       name: "name",

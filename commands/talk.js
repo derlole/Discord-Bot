@@ -29,7 +29,7 @@ module.exports = {
     {
       name: "userrequest",
       description: "gebruiker te praten",
-      type: 6,
+      type: 4,
       required: false,
     },
   ],

@@ -1,9 +1,9 @@
 const { CommandType } = require("wokcommands")
 const { EmbedBuilder } = require('discord.js');
-const spotifyEins = require('.././songdata0.json')
-const spotifyZwei = require('.././songdata1.json')
-const spotifyDrei = require('.././songdata2.json')
-const spotifyVier = require('.././songdata3.json')
+const spotifyEins = require('../../songdata0.json')
+const spotifyZwei = require('../../songdata1.json')
+const spotifyDrei = require('../../songdata2.json')
+const spotifyVier = require('../../songdata3.json');
 const spotify = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier)
 console.log(spotify.length)
 function formatMilliseconds(milliseconds) {

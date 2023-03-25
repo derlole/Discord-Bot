@@ -6,6 +6,20 @@ const spotifyDrei = require('../../songdata2.json')
 const spotifyVier = require('../../songdata3.json');
 const spotify = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier);
 
+function formatMinutes(milliseconds) {
+    if (!milliseconds) return 'no wert bruder'
+    let seconds = Math.floor(milliseconds / 1000) % 60
+    let minutes = Math.floor(milliseconds / 60000)
+    return `${minutes.toString()}:${seconds.toString().padStart(2, '0')} min`
+  }
+function formatHours(milliseconds) {
+    if (!milliseconds) return 'no wert bruder'
+    let seconds = Math.floor(milliseconds / 1000) % 60
+    let minutes = Math.floor(milliseconds / 60000) % 60
+    let hours = Math.floor(milliseconds / 3600000)
+    return `${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} min`
+  }
+
 module.exports = {
     description: 'Give Information about an Artist',
     type: CommandType.LEGACY,
@@ -30,6 +44,7 @@ module.exports = {
                     shuffle: song.shuffle ? 1 : 0,
                     offline: song.offline ? 1 : 0,
                     skipped: song.skipped ? 1 : 0,
+                    artist: song.master_metadata_album_artist_name
                 }
             }
         });
@@ -49,45 +64,56 @@ module.exports = {
                 sortedSongs = Object.entries(songs).sort((a, b) => (b[1].skipped / b[1].played * 100) - (a[1].skipped / a[1].played * 100));
                 break
             case 'offline%':
-                sortedSongs = Object.entries(songs).sort((b, a) => (b[1].offline / b[1].played * 100) - (a[1].offline / a[1].played * 100));
+                sortedSongs = Object.entries(songs).sort((a, b) => (b[1].offline / b[1].played * 100) - (a[1].offline / a[1].played * 100));
                 break
             case 'time':
                 sortedSongs = Object.entries(songs).sort((a, b) => b[1].ms_played - a[1].ms_played);
                 break
+            case 'time%':
+                sortedSongs = Object.entries(songs).sort((a, b) => (b[1].ms_played / b[1].played) - (a[1].ms_played / a[1].played));
+                break
         }
-    
+        let count = 0;
         sortedSongs.forEach(([songName, song]) => {
+            if(song.ms_played > 3600000) {
+                var time = formatHours(song.ms_played)
+            }
+            else {
+                var time = formatMinutes(song.ms_played)
+            }
+            if (count >= 10) return;
             const embed = new EmbedBuilder()
-                .setTitle(`Statistics of ${songName}`) 
+                .setTitle(`Statistics of ${songName} by ${song.artist}`) 
                 .addFields(
                     {
-                        name: "Number of Plays:",
+                        name: "__Number of Plays__:",
                         value: song.played.toString(),
                     },
                     {
-                        name: "Total Time Played:",
-                        value: `${(song.ms_played / 1000 / 60).toFixed(2)} Minutes`,
+                        name: "__Total Playtime__:",
+                        value: time,
                     },
                     {
-                        name: "Number of Skips:",
+                        name: "__Average Time Played:__",
+                        value: `${formatMinutes(song.ms_played / song.played )}`,
+                    },
+                    {
+                        name: "__Skips:__",
                         value: `**${song.skipped}** (${(song.skipped / song.played * 100).toFixed(2)}%)`,
                     },
-                    { 
-                        name: "Number of Listened through:",
-                        value: `**${song.played - song.skipped}** (${((song.played - song.skipped) / song.played * 100).toFixed(2)}%)`,
-                    },
                     {
-                        name: "Number of Shuffle Plays:",
+                        name: "__Number of Shuffle Plays:__",
                         value: `**${song.shuffle}** (${(song.shuffle / song.played * 100).toFixed(2)}%)`,
                     },
                     {
-                        name: "Number of Offline Plays:",
+                        name: "__Number of Offline Plays:__",
                         value: `**${song.offline}** (${(song.offline / song.played * 100).toFixed(2)}%)`,
                     },
                 )
                 .setTimestamp()
                 .setColor('#00FF00');
                 channel.send({ embeds: [embed] })
+            count++;
         });
     }  
 };

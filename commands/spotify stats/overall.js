@@ -43,36 +43,28 @@ module.exports = {
           .setTitle(`Statistics`)
           .addFields(
               {
-                  name: "Number of Plays:",
+                  name: "__Played songs:__",
                   value: data.songplayes.toString(),
               },
               {
-                  name: "Number of Skips:",
-                  value: data.skipped.toString(),
+                name: "__Total Playtime:__",
+                value: (data.playtime.toString()/60000/60).toFixed(2) + " hours",
               },
               {
-                  name: "Number of Listned through:",
-                  value: data.notSkipped.toString(),
+                  name: "__Skips:__",
+                  value: `**${data.skipped}** (${(data.skipped / data.songplayes * 100).toFixed(2)}%)`,
               },
               {
-                  name: "Number of 0 seconds Listening:",
+                  name: "__Number of 0 seconds Listening:__",
                   value: data.notListened.toString(),
               },
               {
-                  name: "Total Playtime:",
-                  value: data.playtime.toString() + " ms",
+                  name: "__Offline Streams:__",
+                  value: `**${data.offline}** (${(data.offline / data.songplayes * 100).toFixed(2)}%)`,
               },
               {
-                  name: "Average skip rate:",
-                  value: `${Math.round(data.skipped / data.songplayes*100*100)/100} %`,
-              },
-              {
-                  name: "Offline Streams:",
-                  value: `**${data.offline.toString()}**\n${Math.round(data.offline.toString()/data.songplayes*100*100)/100} %`,
-              },
-              {
-                  name: "Shuffle Streams:",
-                  value:  `**${data.shuffle.toString()}**\n${Math.round(data.shuffle.toString()/data.songplayes*100*100)/100} %`,
+                  name: "__Shuffle Streams:__",
+                  value:  `**${data.shuffle}** (${(data.shuffle / data.songplayes * 100).toFixed(2)}%)`,
               },
           )
           .setColor('#ff00ff')

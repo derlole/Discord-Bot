@@ -16,6 +16,7 @@ const getData = (songName) => {
     playtime: 0,
     shuffle: 0,
     offline: 0,
+    artist: "",
   }
   spotify.forEach(song => {
     if (song && song.master_metadata_track_name && songName === song.master_metadata_track_name.replace(/\s+/g, "-")) {
@@ -25,6 +26,7 @@ const getData = (songName) => {
       if (song.ms_played > 0) data.playtime = data.playtime + song.ms_played
       if (song.offline) data.offline++
       if (song.shuffle) data.shuffle++
+      data.artist = song.master_metadata_album_artist_name
     }
   })
   return data
@@ -40,40 +42,32 @@ module.exports = {
       args.forEach(track => {
         const data = getData(track)
         const embed = new EmbedBuilder()
-          .setTitle(`Statistics of ${track}`)
+          .setTitle(`Statistics of ${track} *by ${data.artist}*`)
           .addFields(
-              {
-                  name: "Number of Plays:",
-                  value: data.songplayes.toString(),
-              },
-              {
-                  name: "Number of Skips:",
-                  value: data.skipped.toString(),
-              },
-              {
-                  name: "Number of Listned through:",
-                  value: data.notSkipped.toString(),
-              },
-              {
-                  name: "Number of 0 seconds Listening:",
-                  value: data.notListened.toString(),
-              },
-              {
-                  name: "Total Playtime:",
-                  value: data.playtime.toString() + " ms",
-              },
-              {
-                  name: "Average skip rate:",
-                  value: `${Math.round(data.skipped / data.songplayes*100*100)/100} %`,
-              },
-              {
-                  name: "Offline Streams:",
-                  value: `**${data.offline.toString()}**\n${Math.round(data.offline.toString()/data.songplayes*100*100)/100} %`,
-              },
-              {
-                  name: "Shuffle Streams:",
-                  value:  `**${data.shuffle.toString()}**\n${Math.round(data.shuffle.toString()/data.songplayes*100*100)/100} %`,
-              },
+            {
+                name: "__Number of Plays__",
+                value: data.songplayes.toString(),
+            },
+            {
+              name: "__Total Playtime:__",
+              value: (data.playtime.toString()/60000/60).toFixed(2) + " hours",
+            },
+            {
+                name: "__Skips:__",
+                value: `**${data.skipped}** (${(data.skipped / data.songplayes * 100).toFixed(2)}%)`,
+            },
+            {
+                name: "__Number of 0 seconds Listening:__",
+                value: data.notListened.toString(),
+            },
+            {
+                name: "__Offline Streams:__",
+                value: `**${data.offline}** (${(data.offline / data.songplayes * 100).toFixed(2)}%)`,
+            },
+            {
+                name: "__Shuffle Streams:__",
+                value:  `**${data.shuffle}** (${(data.shuffle / data.songplayes * 100).toFixed(2)}%)`,
+            },
           )
           .setColor('#ff00ff')
         channel.send({ embeds: [embed] })

@@ -9,17 +9,33 @@ const spotify = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier);
 const getData = (artistName) => {
     let artistData = {
         songsListened: 0,
-        songsCount: 0,
         artistSkipped: 0,
+        artistPlaytime: 0,
+        artistShuffle: 0,
     }
     spotify.forEach(song => {
         if (song && song.master_metadata_album_artist_name && artistName === song.master_metadata_album_artist_name.replace(/\s+/g, "-")) {
             artistData.songsListened++
             if (song.skipped) artistData.artistSkipped++
+            if (song.ms_played > 0) artistData.artistPlaytime = artistData.artistPlaytime + song.ms_played
+            if (song.shuffle) artistData.artistShuffle++
         }
     })
     return artistData
 }
+function formatMinutes(milliseconds) {
+    if (!milliseconds) return 'no wert bruder'
+    let seconds = Math.floor(milliseconds / 1000) % 60
+    let minutes = Math.floor(milliseconds / 60000)
+    return `${minutes.toString()}:${seconds.toString().padStart(2, '0')} min`
+  }
+function formatHours(milliseconds) {
+    if (!milliseconds) return 'no wert bruder'
+    let seconds = Math.floor(milliseconds / 1000) % 60
+    let minutes = Math.floor(milliseconds / 60000) % 60
+    let hours = Math.floor(milliseconds / 3600000)
+    return `${hours.toString().padStart(2, '0')} h ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} min`
+  }
 
 module.exports = {
     description: 'Give Information about an Artist',
@@ -28,6 +44,33 @@ module.exports = {
     expectedArgs: "<artist-name>",
     ownerOnly: true,
     callback: ({ args, channel }) => {
+        const songs = {}; 
+
+        spotify.forEach(song => {
+            if(song.master_metadata_album_artist_name) {
+                const artistName = song.master_metadata_album_artist_name.replace(/\s+/g, "-");
+                const name = song.master_metadata_track_name;
+
+                if (artistName === args[0]) {
+                if (songs[name]) {
+                    songs[name].played++;
+                    songs[name].ms_played += song.ms_played;
+                    if(song.shuffle) songs[name].shuffle++;
+                    if(song.offline) songs[name].offline++;
+                    if(song.skipped) songs[name].skipped++;   
+                    
+                } else {
+                    songs[name] = {
+                        played: 1,
+                        ms_played: song.ms_played,
+                        shuffle: song.shuffle ? 1 : 0,
+                        offline: song.offline ? 1 : 0,
+                        skipped: song.skipped ? 1 : 0,
+                        artist: song.master_metadata_album_artist_name,
+                        
+                    }
+            }}}
+        });
         args.forEach(artist => {
             const data = getData(artist)
             const embed = new EmbedBuilder()
@@ -38,11 +81,40 @@ module.exports = {
                         value: data.songsListened.toString(),
                     },
                     {
+                        name: "Total Playtime:",
+                        value: formatHours(data.artistPlaytime),
+                    },
+                    {
                         name: "Number of Songs Skipped:",
-                        value: data.artistSkipped.toString(),
+                        value: `**${data.artistSkipped}** (${(data.artistSkipped / data.songsListened * 100).toFixed(2)}%)`,
+                    },
+                    {
+                        name: "Number of Songs Played in Shuffle:",
+                        value: `**${data.artistShuffle}** (${(data.artistShuffle / data.songsListened * 100).toFixed(2)}%)`,
                     },
                 )
                 channel.send({ embeds: [embed] })
         })
+        sortedSongs = Object.entries(songs).sort((a, b) => b[1].played - a[1].played);
+        const embed2 = new EmbedBuilder()
+            .setTitle(`Top 10 Songs of ${args[0]} *(Total Songs: ${sortedSongs.length})* `)
+            .addFields(
+                {
+                    name: "Song Name",
+                    value: `**${sortedSongs.slice(0, 10).map(song => song[0]).join("\n -\n")}**`,
+                    inline: true,
+                },
+                {
+                    name: "Number of Plays",
+                    value: sortedSongs.slice(0, 10).map(song => song[1].played).join("\n -\n"),
+                    inline: true,
+                },
+                {
+                    name: "Time Played",
+                    value: sortedSongs.slice(0, 10).map(song => formatHours(song[1].ms_played)).join("\n -\n"),
+                    inline: true,
+                },
+            )
+            channel.send({ embeds: [embed2],})
     }
 }

@@ -55,7 +55,6 @@ module.exports = {
     interaction.reply({ content: "Talk anwesenheit aktualisiert", ephemeral: true })
       channel.send(`<@${interaction.user.id}> ist für: ${duration} im talk anwesend!`)
             if(userID){
-              console.log("geht")
         channel.send(`<@${userID.id}>`)
       }
     }

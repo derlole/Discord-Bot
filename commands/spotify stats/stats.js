@@ -17,9 +17,21 @@ function formatHours(milliseconds) {
     let seconds = Math.floor(milliseconds / 1000) % 60
     let minutes = Math.floor(milliseconds / 60000) % 60
     let hours = Math.floor(milliseconds / 3600000)
-    return `${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} min`
+    return `${hours.toString().padStart(2, '0')} h ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} min`
   }
-
+  function formatUTCDate(dateString) {
+    const date = new Date(dateString);
+    const options = { 
+      day: 'numeric', 
+      month: 'long', 
+      year: 'numeric', 
+      hour: 'numeric', 
+      minute: 'numeric', 
+      second: 'numeric', 
+      timeZone: 'UTC' 
+    };
+    return date.toLocaleDateString('de-DE', options);
+  }
 module.exports = {
     description: 'Give Information about an Artist',
     type: CommandType.LEGACY,
@@ -36,7 +48,8 @@ module.exports = {
                 songs[name].ms_played += song.ms_played;
                 if(song.shuffle) songs[name].shuffle++;
                 if(song.offline) songs[name].offline++;
-                if(song.skipped) songs[name].skipped++;   
+                if(song.skipped) songs[name].skipped++; 
+                songs[name].firstStream.push(song.ts);
             } else {
                 songs[name] = {
                     played: 1,
@@ -44,10 +57,12 @@ module.exports = {
                     shuffle: song.shuffle ? 1 : 0,
                     offline: song.offline ? 1 : 0,
                     skipped: song.skipped ? 1 : 0,
-                    artist: song.master_metadata_album_artist_name
+                    artist: song.master_metadata_album_artist_name,
+                    firstStream: [song.ts],
                 }
             }
         });
+        
         const sortOption = args[0].toLowerCase();
         let sortedSongs
         switch (sortOption) {
@@ -75,6 +90,7 @@ module.exports = {
         }
         let count = 0;
         sortedSongs.forEach(([songName, song]) => {
+            song.sortedStreamTimes = song.firstStream.sort((a, b) => a - b);
             if(song.ms_played > 3600000) {
                 var time = formatHours(song.ms_played)
             }
@@ -83,6 +99,7 @@ module.exports = {
             }
             if (count >= 10) return;
             const embed = new EmbedBuilder()
+            
                 .setTitle(`Statistics of ${songName} by ${song.artist}`) 
                 .addFields(
                     {
@@ -108,6 +125,10 @@ module.exports = {
                     {
                         name: "__Number of Offline Plays:__",
                         value: `**${song.offline}** (${(song.offline / song.played * 100).toFixed(2)}%)`,
+                    },
+                    {
+                        name: "__First Stream:__",
+                        value: formatUTCDate(song.sortedStreamTimes[0]),
                     },
                 )
                 .setTimestamp()

@@ -25,7 +25,7 @@ const getData = () => {
       if (song.ms_played > 0) data.playtime = data.playtime + song.ms_played
       if (song.offline) data.offline++
       if (song.shuffle) data.shuffle++
-      console.log(song.master_metadata_track_name)
+      //console.log(song.master_metadata_track_name)
     }
   })
   return data

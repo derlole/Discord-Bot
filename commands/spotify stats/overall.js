@@ -37,7 +37,9 @@ module.exports = {
     minArgs: 0,
     expectedArgs: "",
     ownerOnly: true,
-    callback: ({ args, channel }) => {
+    callback: ({ args, channel, guild, message }) => {
+      const server ='1089153627643449436'
+      if(guild.id !== server && message.author.id !== '702427586822930493') return channel.send('This command is not available here')
         const data = getData()
         const embed = new EmbedBuilder()
           .setTitle(`Statistics`)

@@ -58,8 +58,8 @@ module.exports = {
             .setTitle(`The Overall Statistics`)
             .addFields(
                 {
-                    name: "**The Overall Statistics are the statistics of all songs you have listened to on Spotify.\nThey include:**\n",
-                    value: ' Played Songs\nTotal Playtime\nSkips\nNumber of 0 seconds Listening\nOffline Streams\nShuffle Streams',
+                    name: "**The Overall Statistics are the statistics of all songs you have listened to on Spotify.**\n",
+                    value: '**They include:** \n \t Played Songs \n \t Total Playtime \n \t Skips \n \t Number of 0 seconds Listening \n \t Offline Streams \n \t Shuffle Streams',
                 },
                 {
                     name: 'required command:',
@@ -75,8 +75,8 @@ module.exports = {
             .setTitle(`The Songinfo Statistics`)
             .addFields(
                 {
-                    name: "**The Songinfo Statistics are the statistics of a specific song you have listened to on Spotify.\nThey include:**\n",
-                    value: 'Played Songs\nTotal Playtime\nSkips\nNumber of 0 seconds Listening\nOffline Streams\nShuffle Streams',
+                    name: "**The Songinfo Statistics are the statistics of a specific song you have listened to on Spotify.**\n",
+                    value: '**They include:** \n \t Played Songs \n \t Total Playtime \n \t Skips \n \t Number of 0 seconds Listening \n \t Offline Streams \n \t Shuffle Streams',
                 },
                 {
                     name: 'required command:',
@@ -92,8 +92,8 @@ module.exports = {
             .setTitle(`The Artistinfo Statistics`)
             .addFields(
                 {
-                    name: "**The Artistinfo Statistics are the statistics of a specific artist you have listened to on Spotify.\nThey include:**\n",
-                    value: 'Played Songs\nTotal Playtime\nSkips\nNumber of 0 seconds Listening\nOffline Streams\nShuffle Streams',
+                    name: "**The Artistinfo Statistics are the statistics of a specific artist you have listened to on Spotify.**\n",
+                    value: '**They include:** \n \t Played Songs \n \t Total Playtime \n \t Skips \n \t Number of 0 seconds Listening \n \t Offline Streams \n \t Shuffle Streams',
                 },
                 {
                     name: "**The Artistinfo Statistics also include the Top 10 Songs of the Artist**",
@@ -114,11 +114,11 @@ module.exports = {
             .addFields(
                 {
                     name: "**The Stats Statistics are the statistics of the Top 10 Songs based on your requests**",
-                    value: 'Played Songs\nTotal Playtime\nSkips\nNumber of 0 seconds Listening\nOffline Streams\nShuffle Streams',
+                    value: '\tPlayed Songs \n \t Total Playtime \n \t Skips \n \t Number of 0 seconds Listening \n \t Offline Streams \n \t Shuffle Streams',
                 },
                 {
                     name: '__Sorting order__',
-                    value: '**You can require the sorting order by adding the following arguments after the command:** \n \t plays \n \t time \n \t skips \n \t offline \n \t skips% \n \t offline% \n \t time%',
+                    value: '**You can require the sorting order by adding the following arguments after the command:** \n \t plays \n \t time \n \t skips \n \t offline \n \t skips% \n \t offline% \n \t time%\n *(The commands with the percent sign are a sorting order based on the percentage of the particular categories. If you use the command without this percentage sign you will get it sorted by the concrete number.)*',
                 },
                 {
                     name: 'More Information',
@@ -131,9 +131,9 @@ module.exports = {
             )
             .setColor('#1DB954')
             channel.send({ embeds: [statsembed] })}
-            if (addition === 'Sortingorder') {
+            if (argument  === 'stats' && addition === 'Sortingorder') {
                 const statsembed = new EmbedBuilder()
-                .setTitle(`The Stats Statistics`)
+                .setTitle(`The Stats Sortingorder`)
                 .addFields(
                     {                    
                         name: 'plays, time, skips, offline',

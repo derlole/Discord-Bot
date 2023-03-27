@@ -20,7 +20,9 @@ module.exports = {
   maxArgs: 1,
   expectedArgs: "<songarray-number>",
   ownerOnly: true,
-    callback: ({ args, message, channel }) => {
+    callback: ({ args, message, channel, guild }) => {
+      const server ='1089153627643449436'
+      if(guild.id !== server && message.author.id !== '702427586822930493') return channel.send('This command is not available here')
     const songnubmer = args[0];
     console.log(songnubmer);
     if (!songnubmer) return 'Please provide a song number';

@@ -38,7 +38,9 @@ module.exports = {
     minArgs: 1,
     expectedArgs: "<sort-option>",
     ownerOnly: true,
-    callback: ({args, channel}) => {
+    callback: ({args, channel, guild, message}) => {
+        const server ='1089153627643449436'
+        if(guild.id !== server && message.author.id !== '702427586822930493') return channel.send('This command is not available here')
         const songs = {}; 
 
         spotify.forEach(song => {

@@ -5,7 +5,8 @@ module.exports = (messageReaction, user) => {
             const role = messageReaction.message.guild.roles.cache.get('1089514700598943849');
         if (messageReaction.message.guild.id === '1089153627643449436') {
             if(messageReaction.emoji.name === '👍' && messageReaction.message.channel.id ==='1089513842670841857') {
-                guildMember.roles.add(role)
+                guildMember.roles.remove(role)
+                return messageReaction.message.channel.send('So aba nich hier')
         }
     }
 }

@@ -53,7 +53,9 @@ module.exports = {
     minArgs: 1,
     expectedArgs: "<song-number>",
     ownerOnly: true,
-    callback: ({ args, channel }) => {
+    callback: ({ args, channel, guild, message }) => {
+      const server ='1089153627643449436'
+      if(guild.id !== server && message.author.id !== '702427586822930493') return channel.send('This command is not available here')
       args.forEach(track => {
         const data = getData(track)
         const sortedStreamTimes = data.streamTimes.sort((a, b) => new Date(a) - new Date(b))

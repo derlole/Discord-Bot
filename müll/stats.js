@@ -1,9 +1,9 @@
 const { CommandType } = require("wokcommands");
 const { EmbedBuilder } = require('discord.js');
-const spotifyEins = require('../../songdata0.json')
-const spotifyZwei = require('../../songdata1.json')
-const spotifyDrei = require('../../songdata2.json')
-const spotifyVier = require('../../songdata3.json');
+const spotifyEins = require('../songdata0.json')
+const spotifyZwei = require('../songdata1.json')
+const spotifyDrei = require('../songdata2.json')
+const spotifyVier = require('../songdata3.json');
 const spotify = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier);
 
 function formatMinutes(milliseconds) {
@@ -33,81 +33,14 @@ function formatHours(milliseconds) {
     return date.toLocaleDateString('de-DE', options);
   }
 module.exports = {
-    description: "Give Information based on your request",
-  type: CommandType.SLASH,
-  options: [
-    {
-      name: "sort-option",
-      description: "give your request for sorting",
-      type: 3,
-      required: true,
-            choices: [
-        {
-          name: "Song-played",
-          value: "plays"
-        },
-        {
-          name: "Played-time",
-          value: "time"
-        },
-        {
-            name: "Song-skipped",
-            value: "skips"
-        },
-        {
-            name: "Offline-streams",
-            value: "offline"
-        },
-        {
-            name: "Percentual-skipps",
-            value: "skips%"
-        },
-        {
-            name: "Percentual-offline-streams",
-            value: "offline%"
-        },
-        {
-            name: "Percentual-listen-time",
-            value: "time%"
-        },
-        {
-            name: "Percentual-shuffle",
-            value: "shuffle%"
-        },
-        /*{
-            name: "First-stream",
-            value: "first"
-        },*/
-      ]
-    },
-    {
-      name: "sort-order",
-      description: "give your request for sorting",
-      type: 3,
-      required: true,
-        choices: [
-        {
-            name: "Ascending",
-            value: "asc"
-        },
-        {
-            name: "Descending",
-            value: "desc"
-        },
-        ]
-    },
-    {
-        name: "threshold",
-        description: "fuck u i will change this later lol",
-        type: 3,
-        required: false,
-    },
-
-  ],
-    callback: ({interaction, channel, guild}) => { 
-        interaction.deferReply()
+    description: 'Give Information about an Artist',
+    type: CommandType.LEGACY,
+    minArgs: 1,
+    expectedArgs: "<sort-option>",
+    ownerOnly: true,
+    callback: ({args, channel, guild, message}) => {
         const server ='1089153627643449436'
-        if(guild.id !== server) return channel.send('This command is not available here')
+        if(guild.id !== server && message.author.id !== '702427586822930493') return channel.send('This command is not available here')
         const songs = {}; 
 
         spotify.forEach(song => {
@@ -132,10 +65,7 @@ module.exports = {
             }
         });
         
-        const sortOption = interaction.options.getString('sort-option');
-        const sortOrder = interaction.options.getString('sort-order');
-        const threshold = interaction.options.getString('threshold');
-
+        const sortOption = args[0].toLowerCase();
         let sortedSongs
         switch (sortOption) {
             case 'plays':
@@ -163,9 +93,6 @@ module.exports = {
                 sortedSongs = Object.entries(songs).sort((a, b) => (b[1].shuffle / b[1].played * 100) - (a[1].shuffle / a[1].played * 100));
                 break
         }
-        if (sortOrder === 'desc') sortedSongs.reverse();
-        if (threshold) sortedSongs = sortedSongs.filter(song => song[1].played >= threshold);
-
         let count = 0;
         sortedSongs.forEach(([songName, song]) => {
             song.sortedStreamTimes = song.firstStream.sort((a, b) => a - b);
@@ -175,7 +102,7 @@ module.exports = {
             else {
                 var time = formatMinutes(song.ms_played)
             }
-            if (count >= 3) return;
+            if (count >= 10) return;
             const embed = new EmbedBuilder()
             
                 .setTitle(`Statistics of ${songName} by ${song.artist}`) 
@@ -214,5 +141,5 @@ module.exports = {
                 channel.send({ embeds: [embed] })
             count++;
         });
-    }
-}
+    }  
+};

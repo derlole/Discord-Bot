@@ -1,51 +1,5 @@
 const { CommandType } = require("wokcommands")
 const { EmbedBuilder } = require('discord.js');
-const spotifyEins = require('../../songdata0.json')
-const spotifyZwei = require('../../songdata1.json')
-const spotifyDrei = require('../../songdata2.json')
-const spotifyVier = require('../../songdata3.json');
-const spotify = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier);
-
-function formatUTCDate(dateString) {
-  const date = new Date(dateString);
-  const options = { 
-    day: 'numeric', 
-    month: 'long', 
-    year: 'numeric', 
-    hour: 'numeric', 
-    minute: 'numeric', 
-    second: 'numeric', 
-    timeZone: 'UTC' 
-  };
-  return date.toLocaleDateString('de-DE', options);
-}
-const getData = (songName) => {
-  let data = {
-    songplayes: 0,
-    skipped: 0,
-    notSkipped: 0,
-    notListened: 0,
-    playtime: 0,
-    playtime: 0,
-    shuffle: 0,
-    offline: 0,
-    artist: "",
-    streamTimes: [],
-  }
-  spotify.forEach(song => {
-    if (song && song.master_metadata_track_name && songName === song.master_metadata_track_name.replace(/\s+/g, "-")) {
-      data.songplayes++
-      song.skipped ? data.skipped++ : data.notSkipped++
-      if (song.ms_played === 0) data.notListened++
-      if (song.ms_played > 0) data.playtime = data.playtime + song.ms_played
-      if (song.offline) data.offline++
-      if (song.shuffle) data.shuffle++
-      data.artist = song.master_metadata_album_artist_name
-      data.streamTimes.push(song.ts)
-    }
-  })
-  return data
-}
 
 module.exports = {
     description: 'Give number of plays up to an specific song',
@@ -54,6 +8,64 @@ module.exports = {
     expectedArgs: "<song-number>",
     ownerOnly: true,
     callback: ({ args, channel, guild, message }) => {
+
+              //user definition
+              if (message.author.id === '738480351046795305') {
+                const spotifyEins = require('../../nicasongs0.json');
+                const spotifyZwei = require('../../nicasongs1.json');
+                const spotifyDrei = require('../../nicasongs2.json');
+                const spotifyVier = require('../../nicasongs3.json');
+                var spotify = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier);
+            }
+            if (message.author.id === '702427586822930493') {
+                const spotifyEins = require('../../songdata0.json')
+                const spotifyZwei = require('../../songdata1.json')
+                const spotifyDrei = require('../../songdata2.json')
+                const spotifyVier = require('../../songdata3.json');
+                var spotify = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier);
+            }
+            //functions
+            function formatUTCDate(dateString) {
+              const date = new Date(dateString);
+              const options = { 
+                day: 'numeric', 
+                month: 'long', 
+                year: 'numeric', 
+                hour: 'numeric', 
+                minute: 'numeric', 
+                second: 'numeric', 
+                timeZone: 'UTC' 
+              };
+              return date.toLocaleDateString('de-DE', options);
+            }
+            const getData = (songName) => {
+              let data = {
+                songplayes: 0,
+                skipped: 0,
+                notSkipped: 0,
+                notListened: 0,
+                playtime: 0,
+                playtime: 0,
+                shuffle: 0,
+                offline: 0,
+                artist: "",
+                streamTimes: [],
+              }
+              spotify.forEach(song => {
+                if (song && song.master_metadata_track_name && songName === song.master_metadata_track_name.replace(/\s+/g, "-")) {
+                  data.songplayes++
+                  song.skipped ? data.skipped++ : data.notSkipped++
+                  if (song.ms_played === 0) data.notListened++
+                  if (song.ms_played > 0) data.playtime = data.playtime + song.ms_played
+                  if (song.offline) data.offline++
+                  if (song.shuffle) data.shuffle++
+                  data.artist = song.master_metadata_album_artist_name
+                  data.streamTimes.push(song.ts)
+                }
+              })
+              return data
+            }
+      //rest
       const server ='1089153627643449436'
       if(guild.id !== server && message.author.id !== '702427586822930493') return channel.send('This command is not available here')
       args.forEach(track => {

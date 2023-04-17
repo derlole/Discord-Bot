@@ -1,11 +1,31 @@
 const { CommandType } = require("wokcommands")
 const { EmbedBuilder } = require('discord.js');
-const spotifyEins = require('../../songdata0.json')
-const spotifyZwei = require('../../songdata1.json')
-const spotifyDrei = require('../../songdata2.json')
-const spotifyVier = require('../../songdata3.json');
-const spotify = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier);
 
+
+module.exports = {
+    description: 'Give Information about an Artist',
+    type: CommandType.LEGACY,
+    minArgs: 1,
+    expectedArgs: "<artist-name>",
+    ownerOnly: true,
+    callback: ({ args, channel, guild, message }) => {
+        //user definition
+        if (message.author.id === '738480351046795305') {
+            const spotifyEins = require('../../nicasongs0.json');
+            const spotifyZwei = require('../../nicasongs1.json');
+            const spotifyDrei = require('../../nicasongs2.json');
+            const spotifyVier = require('../../nicasongs3.json');
+            var spotify = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier);
+        }
+        if (message.author.id === '702427586822930493') {
+            const spotifyEins = require('../../songdata0.json')
+            const spotifyZwei = require('../../songdata1.json')
+            const spotifyDrei = require('../../songdata2.json')
+            const spotifyVier = require('../../songdata3.json');
+            var spotify = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier);
+        }
+
+//functions
 const getData = (artistName) => {
     let artistData = {
         songsListened: 0,
@@ -37,13 +57,8 @@ function formatHours(milliseconds) {
     return `${hours.toString().padStart(2, '0')} h ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} min`
   }
 
-module.exports = {
-    description: 'Give Information about an Artist',
-    type: CommandType.LEGACY,
-    minArgs: 1,
-    expectedArgs: "<artist-name>",
-    ownerOnly: true,
-    callback: ({ args, channel, guild, message }) => {
+
+//der ganze rest
         const server ='1089153627643449436'
         if(guild.id !== server && message.author.id !== '702427586822930493') return channel.send('This command is not available here')
         const songs = {}; 

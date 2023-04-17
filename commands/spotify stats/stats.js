@@ -1,10 +1,5 @@
 const { CommandType } = require("wokcommands");
 const { EmbedBuilder } = require('discord.js');
-const spotifyEins = require('../../songdata0.json')
-const spotifyZwei = require('../../songdata1.json')
-const spotifyDrei = require('../../songdata2.json')
-const spotifyVier = require('../../songdata3.json');
-const spotify = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier);
 
 function formatMinutes(milliseconds) {
     if (!milliseconds) return 'no wert bruder'
@@ -74,10 +69,10 @@ module.exports = {
             name: "Percentual-shuffle",
             value: "shuffle%"
         },
-        /*{
+        {
             name: "First-stream",
             value: "first"
-        },*/
+        },
       ]
     },
     {
@@ -104,7 +99,22 @@ module.exports = {
     },
 
   ],
-    callback: ({interaction, channel, guild}) => { 
+    callback: ({interaction, channel, guild, user}) => { 
+               //user definition
+               if (user.id === '738480351046795305') {
+                const spotifyEins = require('../../nicasongs0.json');
+                const spotifyZwei = require('../../nicasongs1.json');
+                const spotifyDrei = require('../../nicasongs2.json');
+                const spotifyVier = require('../../nicasongs3.json');
+                var spotify = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier);
+            }
+            if (user.id === '702427586822930493') {
+                const spotifyEins = require('../../songdata0.json')
+                const spotifyZwei = require('../../songdata1.json')
+                const spotifyDrei = require('../../songdata2.json')
+                const spotifyVier = require('../../songdata3.json');
+                var spotify = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier);
+            }
         interaction.deferReply()
         const server ='1089153627643449436'
         if(guild.id !== server) return channel.send('This command is not available here')
@@ -117,7 +127,7 @@ module.exports = {
                 songs[name].ms_played += song.ms_played;
                 if(song.shuffle) songs[name].shuffle++;
                 if(song.offline) songs[name].offline++;
-                if(song.skipped) songs[name].skipped++; 
+                if(song.skipped) songs[name].skipped++;
                 songs[name].firstStream.push(song.ts);
             } else {
                 songs[name] = {
@@ -176,6 +186,10 @@ module.exports = {
                 var time = formatMinutes(song.ms_played)
             }
             if (count >= 3) return;
+            if (songName === 'null') {
+                console.log("übersprungen")
+            }
+            else {
             const embed = new EmbedBuilder()
             
                 .setTitle(`Statistics of ${songName} by ${song.artist}`) 
@@ -213,6 +227,6 @@ module.exports = {
                 .setColor('#00FF00');
                 channel.send({ embeds: [embed] })
             count++;
-        });
+    }});
     }
 }

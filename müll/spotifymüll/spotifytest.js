@@ -1,4 +1,4 @@
-const spotify = require('../.././songdata0.json')
+const spotify = require('../../songdata0.json')
 const { EmbedBuilder } = require('discord.js');
 module.exports = (message, instance) => {
   

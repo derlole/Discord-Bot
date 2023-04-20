@@ -80,8 +80,11 @@ module.exports = {
     const spotifyDrei1 = require("../../songdata2.json")
     const spotifyVier1 = require("../../songdata3.json")
     var spotify1 = spotifyEins1.concat(spotifyZwei1, spotifyDrei1, spotifyVier1)
+    
+    const user = interaction.options.getString("user")
+    const dinge = interaction.options.getString("dinge")
 
-    const getData = (songName0) => {
+    const getSongInfo = (songName0) => {
       let data = {
         songplayes: 0,
         skipped: 0,
@@ -108,7 +111,7 @@ module.exports = {
       })
       return data
     }
-    const getData1 = (songName1) => {
+    const getSongInfo1 = (songName1) => {
       let data1 = {
         songplayes: 0,
         skipped: 0,
@@ -135,103 +138,47 @@ module.exports = {
       })
       return data1
     }
-
-const getArtistInfo = (artistName) => {
-  let artistData = {
-      songsListened: 0,
-      artistSkipped: 0,
-      artistPlaytime: 0,
-      artistShuffle: 0,
-  }
-  spotify0.forEach(song => {
-      if (song && song.master_metadata_album_artist_name && artistName === song.master_metadata_album_artist_name.replace(/\s+/g, "-")) {
-          artistData.songsListened++
-          if (song.skipped) artistData.artistSkipped++
-          if (song.ms_played > 0) artistData.artistPlaytime = artistData.artistPlaytime + song.ms_played
-          if (song.shuffle) artistData.artistShuffle++
+    const getArtistInfo = (artistName) => {
+      let artistData = {
+          songsListened: 0,
+          artistSkipped: 0,
+          artistPlaytime: 0,
+          artistShuffle: 0,
       }
-  })
-  return artistData
-}
-  const getArtistInfo1 = (artistName) => {
-    let artistData = {
-        songsListened: 0,
-        artistSkipped: 0,
-        artistPlaytime: 0,
-        artistShuffle: 0,
+      spotify0.forEach(song => {
+          if (song && song.master_metadata_album_artist_name && artistName === song.master_metadata_album_artist_name.replace(/\s+/g, "-")) {
+              artistData.songsListened++
+              if (song.skipped) artistData.artistSkipped++
+              if (song.ms_played > 0) artistData.artistPlaytime = artistData.artistPlaytime + song.ms_played
+              if (song.shuffle) artistData.artistShuffle++
+          }
+      })
+      return artistData
     }
-    spotify1.forEach(song => {
-        if (song && song.master_metadata_album_artist_name && artistName === song.master_metadata_album_artist_name.replace(/\s+/g, "-")) {
-            artistData.songsListened++
-            if (song.skipped) artistData.artistSkipped++
-            if (song.ms_played > 0) artistData.artistPlaytime = artistData.artistPlaytime + song.ms_played
-            if (song.shuffle) artistData.artistShuffle++
+      const getArtistInfo1 = (artistName) => {
+        let artistData = {
+            songsListened: 0,
+            artistSkipped: 0,
+            artistPlaytime: 0,
+            artistShuffle: 0,
         }
-    })
-    return artistData
-  }
-  const getAll = () => {
-    let data = {
-      songplayes: 0,
-      skipped: 0,
-      notSkipped: 0,
-      notListened: 0,
-      playtime: 0,
-      playtime: 0,
-      shuffle: 0,
-      offline: 0,
-      streamTimes: [],
-    }
-    spotify0.forEach(song => {
-      if (song && song.master_metadata_track_name) {
-        data.songplayes++
-        song.skipped ? data.skipped++ : data.notSkipped++
-        if (song.ms_played === 0) data.notListened++
-        if (song.ms_played > 0) data.playtime = data.playtime + song.ms_played
-        if (song.offline) data.offline++
-        if (song.shuffle) data.shuffle++
-        //console.log(song.master_metadata_track_name)
-        data.streamTimes.push(song.ts)
+        spotify1.forEach(song => {
+            if (song && song.master_metadata_album_artist_name && artistName === song.master_metadata_album_artist_name.replace(/\s+/g, "-")) {
+                artistData.songsListened++
+                if (song.skipped) artistData.artistSkipped++
+                if (song.ms_played > 0) artistData.artistPlaytime = artistData.artistPlaytime + song.ms_played
+                if (song.shuffle) artistData.artistShuffle++
+            }
+        })
+        return artistData
       }
-    })
-    return data
-  }
-  const getAll1 = () => {
-    let data = {
-      songplayes: 0,
-      skipped: 0,
-      notSkipped: 0,
-      notListened: 0,
-      playtime: 0,
-      playtime: 0,
-      shuffle: 0,
-      offline: 0,
-      streamTimes: [],
-    }
-    spotify1.forEach(song => {
-      if (song && song.master_metadata_track_name) {
-        data.songplayes++
-        song.skipped ? data.skipped++ : data.notSkipped++
-        if (song.ms_played === 0) data.notListened++
-        if (song.ms_played > 0) data.playtime = data.playtime + song.ms_played
-        if (song.offline) data.offline++
-        if (song.shuffle) data.shuffle++
-        //console.log(song.master_metadata_track_name)
-        data.streamTimes.push(song.ts)
-      }
-    })
-    return data
-  }
-    const user = interaction.options.getString("user")
-    const dinge = interaction.options.getString("dinge")
+
     switch (dinge) {
       case "songinfo":
         const songname = interaction.options.getString("song").replace(/\s+/g, "-")
-        //const songname1 =interaction.options.getString("song").replace(/\s+/g, "-");
         console.log(songname)
-        var data = getData(songname)
-        var data1 = getData1(songname)
-        var SI = true
+        var data = getSongInfo(songname)
+        var data1 = getSongInfo1(songname)
         break
       case "artistinfo":
         const artistname = interaction.options.getString("song").replace(/\s+/g, "-")
@@ -240,29 +187,12 @@ const getArtistInfo = (artistName) => {
         var ATI = true
         break
       case "overall":
-        var data = getAll()
-        var data1 = getAll1()
-        var OI = true
+        var data = getSongInfo()
+        var data1 = getSongInfo1()
         break
     }
-    
 
-    //until here
 
-    if(ATI) {
-        const artistembed = new EmbedBuilder()
-        .setTitle(`Artist: ${args[1]}`)
-        .setColor("000000")
-        .setFields(
-            { name: "User", value: `Nica / derlole` },
-            { name: "Songs Listened", value: `${data.songsListened} / ${data1.songsListened}` },
-            { name: "Skipped", value: `${data.artistSkipped} / ${data1.artistSkipped}` },
-            { name: "Playtime", value: `${formatHours(data.artistPlaytime, { long: true })} / ${formatHours(data1.artistPlaytime, { long: true })}` },
-            { name: "Shuffle", value: `${data.artistShuffle} / ${data1.artistShuffle}` },
-        )
-        channel.send({ embeds: [artistembed] })
-    }
-    else if (SI) {
     const sortedFirststream = data.streamTimes.sort((a, b) => new Date(a) - new Date(b))
     const sortedFirststream1 = data1.streamTimes.sort((a, b) => new Date(a) - new Date(b))
     const embed = new EmbedBuilder()
@@ -274,32 +204,12 @@ const getArtistInfo = (artistName) => {
         { name: "Skipped", value: `${data.skipped} / ${data1.skipped}` },
         { name: "Not Skipped", value: `${data.notSkipped} / ${data1.notSkipped}` },
         { name: "Not Listened", value: `${data.notListened} / ${data1.notListened}` },
-        { name: "Playtime", value: `${formatHours(data.playtime)} / ${formatHours(data1.playtime)}` },
+        { name: "Playtime", value: `${formatMinutes(data.playtime)} / ${formatMinutes(data1.playtime)}` },
         { name: "Shuffle", value: `${data.shuffle} / ${data1.shuffle}` },
         { name: "Offline", value: `${data.offline} / ${data1.offline}` },
         { name: "Artist", value: `${data.artist} ` },
         { name: "First Stream", value: `${formatUTCDate(sortedFirststream[0])} / ${formatUTCDate(sortedFirststream1[0])}` }
       )
     channel.send({ embeds: [embed] })
-      }
-    else if(OI) {
-    const sortedFirststream = data.streamTimes.sort((a, b) => new Date(a) - new Date(b))
-    const sortedFirststream1 = data1.streamTimes.sort((a, b) => new Date(a) - new Date(b))
-    const embedoverall = new EmbedBuilder()
-      .setTitle(`Overall`)
-      .setColor("000000")
-      .setFields(
-        { name: "User", value: `Nica / derlole` },
-        { name: "Songplayes", value: `${data.songplayes} / ${data1.songplayes}` },
-        { name: "Skipped", value: `${data.skipped} / ${data1.skipped}` },
-        { name: "Not Skipped", value: `${data.notSkipped} / ${data1.notSkipped}` },
-        { name: "Not Listened", value: `${data.notListened} / ${data1.notListened}` },
-        { name: "Playtime", value: `${formatHours(data.playtime)} / ${formatHours(data1.playtime)}` },
-        { name: "Shuffle", value: `${data.shuffle} / ${data1.shuffle}` },
-        { name: "Offline", value: `${data.offline} / ${data1.offline}` },
-        { name: "First Stream", value: `${formatUTCDate(sortedFirststream[0])} / ${formatUTCDate(sortedFirststream1[0])}` }
-      )
-    channel.send({ embeds: [embedoverall] })
-    }
   },
 }

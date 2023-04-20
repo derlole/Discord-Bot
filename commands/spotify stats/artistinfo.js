@@ -112,23 +112,55 @@ function formatHours(milliseconds) {
                 channel.send({ embeds: [embed] })
         })
         sortedSongs = Object.entries(songs).sort((a, b) => b[1].played - a[1].played);
+        //console.log(sortedSongs[0][1])
+
+        //const data = getData(args[0])
         const embed2 = new EmbedBuilder()
-            .setTitle(`Top 10 Songs of ${args[0]} *(Total Songs: ${sortedSongs.length})* `)
+            .setTitle(`Statistics of *hier steht irgendwann was lul`)
             .addFields(
+
                 {
-                    name: "Song Name",
-                    value: `**${sortedSongs.slice(0, 10).map(song => song[0]).join("\n -\n")}**`,
-                    inline: true,
+                    name: `__**Top 10 Songs of ${args[0]}**__`,
                 },
                 {
-                    name: "Number of Plays",
-                    value: sortedSongs.slice(0, 10).map(song => song[1].played).join("\n -\n"),
-                    inline: true,
+                    name: `${sortedSongs[0][0]}`,
+                    value: `${sortedSongs[0][1].played} plays \n${formatHours(sortedSongs[0][1].ms_played)} \n`,
                 },
                 {
-                    name: "Time Played",
-                    value: sortedSongs.slice(0, 10).map(song => formatHours(song[1].ms_played)).join("\n -\n"),
-                    inline: true,
+                    name: `${sortedSongs[1][0]}`,
+                    value: `${sortedSongs[1][1].played} plays \n${formatHours(sortedSongs[1][1].ms_played)} \n`,
+                },
+                {
+                    name: `${sortedSongs[2][0]}`,
+                    value: `${sortedSongs[2][1].played} plays \n${formatHours(sortedSongs[2][1].ms_played)} \n`,
+                },
+                {
+                    name: `${sortedSongs[3][0]}`,
+                    value: `${sortedSongs[3][1].played} plays \n${formatHours(sortedSongs[3][1].ms_played)} \n`,
+                },
+                {
+                    name: `${sortedSongs[4][0]}`,
+                    value: `${sortedSongs[4][1].played} plays \n${formatHours(sortedSongs[4][1].ms_played)} \n`,
+                },
+                {
+                    name: `${sortedSongs[5][0]}`,
+                    value: `${sortedSongs[5][1].played} plays \n${formatHours(sortedSongs[5][1].ms_played)}\n`,
+                },
+                {
+                    name: `${sortedSongs[6][0]}`,
+                    value: `${sortedSongs[6][1].played} plays \n${formatHours(sortedSongs[6][1].ms_played)} \n`,
+                },
+                {
+                    name: `${sortedSongs[7][0]}`,
+                    value: `${sortedSongs[7][1].played} plays \n${formatHours(sortedSongs[7][1].ms_played)} \n`,
+                },
+                {
+                    name: `${sortedSongs[8][0]}`,
+                    value: `${sortedSongs[8][1].played} plays \n${formatHours(sortedSongs[8][1].ms_played)} \n`,
+                },
+                {
+                    name: `${sortedSongs[9][0]}`,
+                    value: `${sortedSongs[9][1].played} plays \n${formatHours(sortedSongs[9][1].ms_played)} \n`,
                 },
             )
             channel.send({ embeds: [embed2],})

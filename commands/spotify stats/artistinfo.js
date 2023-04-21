@@ -1,5 +1,5 @@
 const { CommandType } = require("wokcommands")
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, spoiler } = require('discord.js');
 
 
 module.exports = {
@@ -9,21 +9,13 @@ module.exports = {
     expectedArgs: "<artist-name>",
     ownerOnly: true,
     callback: ({ args, channel, guild, message }) => {
-        //user definition
-        if (message.author.id === '738480351046795305') {
-            const spotifyEins = require('../../nicasongs0.json');
-            const spotifyZwei = require('../../nicasongs1.json');
-            const spotifyDrei = require('../../nicasongs2.json');
-            const spotifyVier = require('../../nicasongs3.json');
-            var spotify = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier);
-        }
-        if (message.author.id === '702427586822930493') {
-            const spotifyEins = require('../../songdata0.json')
-            const spotifyZwei = require('../../songdata1.json')
-            const spotifyDrei = require('../../songdata2.json')
-            const spotifyVier = require('../../songdata3.json');
-            var spotify = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier);
-        }
+        const user = message.author.id
+        console.log(user)
+        spotifyEins = require(`../../Spotifydatenverhau/songdata0-${user}.json`)
+        spotifyZwei = require(`../../Spotifydatenverhau/songdata1-${user}.json`)
+        spotifyDrei = require(`../../Spotifydatenverhau/songdata2-${user}.json`)
+        spotifyVier = require(`../../Spotifydatenverhau/songdata3-${user}.json`)
+         var spotify = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier);
 
 //functions
 const getData = (artistName) => {
@@ -112,15 +104,13 @@ function formatHours(milliseconds) {
                 channel.send({ embeds: [embed] })
         })
         sortedSongs = Object.entries(songs).sort((a, b) => b[1].played - a[1].played);
-        //console.log(sortedSongs[0][1])
 
-        //const data = getData(args[0])
         const embed2 = new EmbedBuilder()
             .setTitle(`Statistics of *hier steht irgendwann was lul`)
             .addFields(
-
                 {
                     name: `__**Top 10 Songs of ${args[0]}**__`,
+                    value:'\u200b',
                 },
                 {
                     name: `${sortedSongs[0][0]}`,

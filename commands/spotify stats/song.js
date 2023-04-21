@@ -11,20 +11,15 @@ module.exports = {
     callback: ({ args, message, channel, guild }) => {
 
             //user definition
-            if (message.author.id === '738480351046795305') {
-              const spotifyEins = require('../../nicasongs0.json');
-              const spotifyZwei = require('../../nicasongs1.json');
-              const spotifyDrei = require('../../nicasongs2.json');
-              const spotifyVier = require('../../nicasongs3.json');
-              var spotify = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier);
-          }
-          if (message.author.id === '702427586822930493') {
-              const spotifyEins = require('../../songdata0.json')
-              const spotifyZwei = require('../../songdata1.json')
-              const spotifyDrei = require('../../songdata2.json')
-              const spotifyVier = require('../../songdata3.json');
-              var spotify = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier);
-          }
+            const user = message.author.id
+            console.log(user)
+            spotifyEins = require(`../../Spotifydatenverhau/songdata0-${user}.json`)
+            spotifyZwei = require(`../../Spotifydatenverhau/songdata1-${user}.json`)
+            spotifyDrei = require(`../../Spotifydatenverhau/songdata2-${user}.json`)
+            spotifyVier = require(`../../Spotifydatenverhau/songdata3-${user}.json`)
+             var spotify = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier);
+             
+             
           console.log(spotify.length)
           //functions
 function formatMilliseconds(milliseconds) {

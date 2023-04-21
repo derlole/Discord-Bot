@@ -227,7 +227,6 @@ const getArtistInfo = (artistName) => {
     switch (dinge) {
       case "songinfo":
         const songname = interaction.options.getString("song").replace(/\s+/g, "-")
-        //const songname1 =interaction.options.getString("song").replace(/\s+/g, "-");
         console.log(songname)
         var data = getData(songname)
         var data1 = getData1(songname)

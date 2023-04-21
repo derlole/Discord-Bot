@@ -101,20 +101,14 @@ module.exports = {
   ],
     callback: ({interaction, channel, guild, user}) => { 
                //user definition
-               if (user.id === '738480351046795305') {
-                const spotifyEins = require('../../nicasongs0.json');
-                const spotifyZwei = require('../../nicasongs1.json');
-                const spotifyDrei = require('../../nicasongs2.json');
-                const spotifyVier = require('../../nicasongs3.json');
-                var spotify = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier);
-            }
-            if (user.id === '702427586822930493') {
-                const spotifyEins = require('../../songdata0.json')
-                const spotifyZwei = require('../../songdata1.json')
-                const spotifyDrei = require('../../songdata2.json')
-                const spotifyVier = require('../../songdata3.json');
-                var spotify = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier);
-            }
+               const dude = interaction.user.id
+              console.log(dude)
+              spotifyEins = require(`../../Spotifydatenverhau/songdata0-${dude}.json`)
+              spotifyZwei = require(`../../Spotifydatenverhau/songdata1-${dude}.json`)
+              spotifyDrei = require(`../../Spotifydatenverhau/songdata2-${dude}.json`)
+              spotifyVier = require(`../../Spotifydatenverhau/songdata3-${dude}.json`)
+               var spotify = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier);
+
         interaction.deferReply()
         const server ='1089153627643449436'
         if(guild.id !== server) return channel.send('This command is not available here')

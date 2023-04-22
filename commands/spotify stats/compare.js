@@ -70,15 +70,15 @@ module.exports = {
   slash: true,
   callback: async ({ client, message, interaction, args, text, channel, guild, version }) => {
     //Importing the data
-    const spotifyEins = require("../../nicasongs0.json")
-    const spotifyZwei = require("../../nicasongs1.json")
-    const spotifyDrei = require("../../nicasongs2.json")
-    const spotifyVier = require("../../nicasongs3.json")
+    const spotifyEins = require("../../Spotifydatenverhau/songdata0-738480351046795305.json")
+    const spotifyZwei = require("../../Spotifydatenverhau/songdata1-738480351046795305.json")
+    const spotifyDrei = require("../../Spotifydatenverhau/songdata2-738480351046795305.json")
+    const spotifyVier = require("../../Spotifydatenverhau/songdata3-738480351046795305.json")
     var spotify0 = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier)
-    const spotifyEins1 = require("../../songdata0.json")
-    const spotifyZwei1 = require("../../songdata1.json")
-    const spotifyDrei1 = require("../../songdata2.json")
-    const spotifyVier1 = require("../../songdata3.json")
+    const spotifyEins1 = require("../../Spotifydatenverhau/songdata0-702427586822930493.json")
+    const spotifyZwei1 = require("../../Spotifydatenverhau/songdata1-702427586822930493.json")
+    const spotifyDrei1 = require("../../Spotifydatenverhau/songdata2-702427586822930493.json")
+    const spotifyVier1 = require("../../Spotifydatenverhau/songdata3-702427586822930493.json")
     var spotify1 = spotifyEins1.concat(spotifyZwei1, spotifyDrei1, spotifyVier1)
 
     const getData = (songName0) => {

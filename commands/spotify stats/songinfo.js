@@ -9,6 +9,19 @@ module.exports = {
     ownerOnly: true,
     callback: ({ args, channel, guild, message }) => {
 
+      function formatMinutes(milliseconds) {
+        if (!milliseconds) return "no wert bruder"
+        let seconds = Math.floor(milliseconds / 1000) % 60
+        let minutes = Math.floor(milliseconds / 60000)
+        return `${minutes.toString()}:${seconds.toString().padStart(2, "0")} min`
+      }
+      function formatHours(milliseconds) {
+        if (!milliseconds) return "no wert bruder"
+        let seconds = Math.floor(milliseconds / 1000) % 60
+        let minutes = Math.floor(milliseconds / 60000) % 60
+        let hours = Math.floor(milliseconds / 3600000)
+        return `${hours.toString().padStart(2, "0")} h ${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")} min`
+      }
               //user definition
               const user = message.author.id
               console.log(user)
@@ -73,7 +86,11 @@ module.exports = {
             },
             {
               name: "__Total Playtime:__",
-              value: (data.playtime.toString()/60000/60).toFixed(2) + " hours",
+              value: formatHours(data.playtime),
+            },
+            {
+              name: "__Average Playtime:__",
+              value: formatMinutes(data.playtime / data.songplayes),
             },
             {
                 name: "__Skips:__",

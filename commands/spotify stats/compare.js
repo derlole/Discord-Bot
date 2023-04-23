@@ -36,7 +36,7 @@ module.exports = {
     {
       name: "user",
       description: "Your requestet user to compare with",
-      type: 3,
+      type: 6,
       required: true,
     },
     {
@@ -63,22 +63,26 @@ module.exports = {
       name: "song",
       description: "give your requested song",
       type: 3,
-      required: true,
+      //required: true,
     },
   ],
   category: "spotify stats",
   slash: true,
-  callback: async ({ client, message, interaction, args, text, channel, guild, version }) => {
+  callback: async ({ client, interaction, args, channel, guild }) => {
+    if (interaction.options.getString("dinge") === "songinfo" &! interaction.options.getString("song")) return interaction.reply({ content: "Please give me a song to compare", ephemeral: true })
+    if (interaction.options.getString("dinge") === "artistinfo" &! interaction.options.getString("song")) return interaction.reply({ content: "Please give me a song to compare", ephemeral: true })
     //Importing the data
-    const spotifyEins = require("../../Spotifydatenverhau/songdata0-738480351046795305.json")
-    const spotifyZwei = require("../../Spotifydatenverhau/songdata1-738480351046795305.json")
-    const spotifyDrei = require("../../Spotifydatenverhau/songdata2-738480351046795305.json")
-    const spotifyVier = require("../../Spotifydatenverhau/songdata3-738480351046795305.json")
+    const user = interaction.options.getUser("user").id
+    const user1 = interaction.user.id
+    const spotifyEins = require(`../../Spotifydatenverhau/songdata0-${user}.json`)
+    const spotifyZwei = require(`../../Spotifydatenverhau/songdata1-${user}.json`)
+    const spotifyDrei = require(`../../Spotifydatenverhau/songdata2-${user}.json`)
+    const spotifyVier = require(`../../Spotifydatenverhau/songdata3-${user}.json`)
     var spotify0 = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier)
-    const spotifyEins1 = require("../../Spotifydatenverhau/songdata0-702427586822930493.json")
-    const spotifyZwei1 = require("../../Spotifydatenverhau/songdata1-702427586822930493.json")
-    const spotifyDrei1 = require("../../Spotifydatenverhau/songdata2-702427586822930493.json")
-    const spotifyVier1 = require("../../Spotifydatenverhau/songdata3-702427586822930493.json")
+    const spotifyEins1 = require(`../../Spotifydatenverhau/songdata0-${user1}.json`)
+    const spotifyZwei1 = require(`../../Spotifydatenverhau/songdata1-${user1}.json`)
+    const spotifyDrei1 = require(`../../Spotifydatenverhau/songdata2-${user1}.json`)
+    const spotifyVier1 = require(`../../Spotifydatenverhau/songdata3-${user1}.json`)
     var spotify1 = spotifyEins1.concat(spotifyZwei1, spotifyDrei1, spotifyVier1)
 
     const getData = (songName0) => {
@@ -222,7 +226,6 @@ const getArtistInfo = (artistName) => {
     })
     return data
   }
-    const user = interaction.options.getString("user")
     const dinge = interaction.options.getString("dinge")
     switch (dinge) {
       case "songinfo":
@@ -247,13 +250,15 @@ const getArtistInfo = (artistName) => {
     
 
     //until here
+    const dude = interaction.options.getUser("user").username
+    const dude1 = interaction.user.username
 
     if(ATI) {
         const artistembed = new EmbedBuilder()
-        .setTitle(`Artist: ${args[1]}`)
+        .setTitle(`Artist: ${args[2]}`)
         .setColor("000000")
         .setFields(
-            { name: "User", value: `Nica / derlole` },
+            { name: "User", value: `${dude} / ${dude1}` },
             { name: "Songs Listened", value: `${data.songsListened} / ${data1.songsListened}` },
             { name: "Skipped", value: `${data.artistSkipped} / ${data1.artistSkipped}` },
             { name: "Playtime", value: `${formatHours(data.artistPlaytime, { long: true })} / ${formatHours(data1.artistPlaytime, { long: true })}` },
@@ -265,17 +270,16 @@ const getArtistInfo = (artistName) => {
     const sortedFirststream = data.streamTimes.sort((a, b) => new Date(a) - new Date(b))
     const sortedFirststream1 = data1.streamTimes.sort((a, b) => new Date(a) - new Date(b))
     const embed = new EmbedBuilder()
-      .setTitle(`Song: ${args[1]} by ${data.artist}`)
+      .setTitle(`Song: ${args[2]} by ${data.artist}`)
       .setColor("000000")
       .setFields(
-        { name: "User", value: `Nica / derlole` },
-        { name: "Songplayes", value: `${data.songplayes} / ${data1.songplayes}` },
-        { name: "Skipped", value: `${data.skipped} / ${data1.skipped}` },
-        { name: "Not Skipped", value: `${data.notSkipped} / ${data1.notSkipped}` },
-        { name: "Not Listened", value: `${data.notListened} / ${data1.notListened}` },
+        { name: "User", value: `${dude} / ${dude1} / diff / %diff` },
+        { name: "Songplays", value: `${data.songplayes} / ${data1.songplayes} / ${Math.abs(data.songplayes - data1.songplayes)} /Percentual Difference: das hier is nur testtext` },
         { name: "Playtime", value: `${formatHours(data.playtime)} / ${formatHours(data1.playtime)}` },
-        { name: "Shuffle", value: `${data.shuffle} / ${data1.shuffle}` },
-        { name: "Offline", value: `${data.offline} / ${data1.offline}` },
+        { name: "Average time Played", value: `${formatMinutes(data.playtime / data.songplayes)} / ${formatMinutes(data1.playtime / data1.songplayes)}` },
+        { name: "Skipped", value: `**${data.skipped}** (${(data.skipped / data.songplayes * 100).toFixed(2)}%) / **${data1.skipped}** (${(data1.skipped / data1.songplayes * 100).toFixed(2)}%) / **${Math.abs(data.skipped - data1.skipped)}**  (${(Math.abs((data.skipped / data.songplayes * 100).toFixed(2) - (data1.skipped / data1.songplayes * 100).toFixed(2))).toFixed(2)})% / (${(Math.abs((data.skipped / data.songplayes * 100).toFixed(2) / (data1.skipped / data1.songplayes * 100).toFixed(2))).toFixed(2)})%` },
+        { name: "Shuffle", value: `**${data.shuffle}** (${(data.shuffle / data.songplayes * 100).toFixed(2)}%) / **${data1.shuffle}** (${(data1.shuffle / data1.songplayes * 100).toFixed(2)}%) / **${Math.abs(data.shuffle - data1.shuffle)}**  (${(Math.abs((data.shuffle / data.songplayes * 100).toFixed(2) - (data1.shuffle / data1.songplayes * 100).toFixed(2))).toFixed(2)})% / (${(Math.abs((data.shuffle / data.songplayes * 100).toFixed(2) / (data1.shuffle / data1.songplayes * 100).toFixed(2))).toFixed(2)})%` },
+        { name: "Offline", value: `**${data.offline}** (${(data.offline / data.songplayes * 100).toFixed(2)}%) / **${data1.offline}** (${(data1.offline / data1.songplayes * 100).toFixed(2)}%) / **${Math.abs(data.offline - data1.offline)}**  (${(Math.abs((data.offline / data.songplayes * 100).toFixed(2) - (data1.offline / data1.songplayes * 100).toFixed(2))).toFixed(2)})% / (${(Math.abs((data.offline / data.songplayes * 100).toFixed(2) / (data1.offline / data1.songplayes * 100).toFixed(2))).toFixed(2)})%` },
         { name: "Artist", value: `${data.artist} ` },
         { name: "First Stream", value: `${formatUTCDate(sortedFirststream[0])} / ${formatUTCDate(sortedFirststream1[0])}` }
       )
@@ -288,14 +292,13 @@ const getArtistInfo = (artistName) => {
       .setTitle(`Overall`)
       .setColor("000000")
       .setFields(
-        { name: "User", value: `Nica / derlole` },
-        { name: "Songplayes", value: `${data.songplayes} / ${data1.songplayes}` },
-        { name: "Skipped", value: `${data.skipped} / ${data1.skipped}` },
-        { name: "Not Skipped", value: `${data.notSkipped} / ${data1.notSkipped}` },
-        { name: "Not Listened", value: `${data.notListened} / ${data1.notListened}` },
-        { name: "Playtime", value: `${formatHours(data.playtime)} / ${formatHours(data1.playtime)}` },
-        { name: "Shuffle", value: `${data.shuffle} / ${data1.shuffle}` },
-        { name: "Offline", value: `${data.offline} / ${data1.offline}` },
+        { name: "User", value: `${dude} / ${dude1}` },
+        { name: "Songplayes", value: `${data.songplayes} / ${data1.songplayes} / ${Math.abs(data.songplayes - data1.songplayes)}` },
+        { name: "Playtime", value: `${formatHours(data.playtime)} / ${formatHours(data1.playtime)} / ${formatHours(Math.abs(data.playtime - data1.playtime))}` },
+        { name: "Not Listened", value: `${data.notListened} / ${data1.notListened} / ${Math.abs(data.notListened - data1.notListened)}` },
+        { name: "Skipped", value: `**${data.skipped}** (${(data.skipped / data.songplayes * 100).toFixed(2)}%) / **${data1.skipped}** (${(data1.skipped / data1.songplayes * 100).toFixed(2)}%) / **${Math.abs(data.skipped - data1.skipped)}**  (${Math.abs((data.skipped / data.songplayes * 100).toFixed(2) - (data1.skipped / data1.songplayes * 100).toFixed(2))})% / (${(Math.abs((data.skipped / data.songplayes * 100).toFixed(2) / (data1.skipped / data1.songplayes * 100).toFixed(2))).toFixed(2)})% ` },
+        { name: "Shuffle", value: `**${data.shuffle}** (${(data.shuffle / data.songplayes * 100).toFixed(2)}%) / **${data1.shuffle}** (${(data1.shuffle / data1.songplayes * 100).toFixed(2)}%) / **${Math.abs(data.shuffle - data1.shuffle)}**  (${Math.abs((data.shuffle / data.songplayes * 100).toFixed(2) - (data1.shuffle / data1.songplayes * 100).toFixed(2))})% / (${(Math.abs((data.shuffle / data.songplayes * 100).toFixed(2) / (data1.shuffle / data1.songplayes * 100).toFixed(2))).toFixed(2)})%` },
+        { name: "Offline", value: `**${data.offline}** (${(data.offline / data.songplayes * 100).toFixed(2)}%) / **${data1.offline}** (${(data1.offline / data1.songplayes * 100).toFixed(2)}%) / **${Math.abs(data.offline - data1.offline)}**  (${(Math.abs((data.offline / data.songplayes * 100).toFixed(2) - (data1.offline / data1.songplayes * 100).toFixed(2))).toFixed(2)})% / (${(Math.abs((data.offline / data.songplayes * 100).toFixed(2) / (data1.offline / data1.songplayes * 100).toFixed(2))).toFixed(2)})%` },
         { name: "First Stream", value: `${formatUTCDate(sortedFirststream[0])} / ${formatUTCDate(sortedFirststream1[0])}` }
       )
     channel.send({ embeds: [embedoverall] })

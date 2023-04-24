@@ -1,5 +1,6 @@
 const { CommandType } = require("wokcommands")
 const { EmbedBuilder } = require('discord.js');
+const getSpotifyData = require("../../Spotifydatenverhau/getSpotifyData")
 
 module.exports = {
     description: 'Give number of plays up to an specific song',
@@ -24,12 +25,7 @@ module.exports = {
       }
               //user definition
               const user = message.author.id
-              console.log(user)
-              spotifyEins = require(`../../Spotifydatenverhau/songdata0-${user}.json`)
-              spotifyZwei = require(`../../Spotifydatenverhau/songdata1-${user}.json`)
-              spotifyDrei = require(`../../Spotifydatenverhau/songdata2-${user}.json`)
-              spotifyVier = require(`../../Spotifydatenverhau/songdata3-${user}.json`)
-               var spotify = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier);
+               var spotify = getSpotifyData(user)
             //functions
             function formatUTCDate(dateString) {
               const date = new Date(dateString);

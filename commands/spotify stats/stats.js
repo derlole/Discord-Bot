@@ -1,5 +1,6 @@
 const { CommandType } = require("wokcommands");
 const { EmbedBuilder } = require('discord.js');
+const getSpotifyData = require("../../Spotifydatenverhau/getSpotifyData")
 
 function formatMinutes(milliseconds) {
     if (!milliseconds) return 'no wert bruder'
@@ -102,12 +103,7 @@ module.exports = {
     callback: ({interaction, channel, guild, user}) => { 
                //user definition
                const dude = interaction.user.id
-              console.log(dude)
-              spotifyEins = require(`../../Spotifydatenverhau/songdata0-${dude}.json`)
-              spotifyZwei = require(`../../Spotifydatenverhau/songdata1-${dude}.json`)
-              spotifyDrei = require(`../../Spotifydatenverhau/songdata2-${dude}.json`)
-              spotifyVier = require(`../../Spotifydatenverhau/songdata3-${dude}.json`)
-               var spotify = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier);
+               var spotify = getSpotifyData(dude)
 
         interaction.deferReply()
         const server ='1089153627643449436'

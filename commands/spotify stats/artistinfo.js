@@ -1,6 +1,8 @@
 const { CommandType } = require("wokcommands")
 const { EmbedBuilder, spoiler } = require('discord.js');
 
+const getSpotifyData = require('../../Spotifydatenverhau/getSpotifyData')
+
 
 module.exports = {
     description: 'Give Information about an Artist',
@@ -11,11 +13,7 @@ module.exports = {
     callback: ({ args, channel, guild, message }) => {
         const user = message.author.id
         console.log(user)
-        spotifyEins = require(`../../Spotifydatenverhau/songdata0-${user}.json`)
-        spotifyZwei = require(`../../Spotifydatenverhau/songdata1-${user}.json`)
-        spotifyDrei = require(`../../Spotifydatenverhau/songdata2-${user}.json`)
-        spotifyVier = require(`../../Spotifydatenverhau/songdata3-${user}.json`)
-         var spotify = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier);
+         var spotify = getSpotifyData(user)
 
 //functions
 const getData = (artistName) => {

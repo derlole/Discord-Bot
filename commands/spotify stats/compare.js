@@ -1,5 +1,6 @@
 const { CommandType } = require("wokcommands")
 const { EmbedBuilder } = require("discord.js")
+const getSpotifyData = require("../../Spotifydatenverhau/getSpotifyData")
 
 function formatMinutes(milliseconds) {
   if (!milliseconds) return "no wert bruder"
@@ -74,17 +75,9 @@ module.exports = {
     //Importing the data
     const user = interaction.options.getUser("user").id
     const user1 = interaction.user.id
-    const spotifyEins = require(`../../Spotifydatenverhau/songdata0-${user}.json`)
-    const spotifyZwei = require(`../../Spotifydatenverhau/songdata1-${user}.json`)
-    const spotifyDrei = require(`../../Spotifydatenverhau/songdata2-${user}.json`)
-    const spotifyVier = require(`../../Spotifydatenverhau/songdata3-${user}.json`)
-    var spotify0 = spotifyEins.concat(spotifyZwei, spotifyDrei, spotifyVier)
-    const spotifyEins1 = require(`../../Spotifydatenverhau/songdata0-${user1}.json`)
-    const spotifyZwei1 = require(`../../Spotifydatenverhau/songdata1-${user1}.json`)
-    const spotifyDrei1 = require(`../../Spotifydatenverhau/songdata2-${user1}.json`)
-    const spotifyVier1 = require(`../../Spotifydatenverhau/songdata3-${user1}.json`)
-    var spotify1 = spotifyEins1.concat(spotifyZwei1, spotifyDrei1, spotifyVier1)
 
+    var spotify0 = getSpotifyData(user)
+    var spotify1 = getSpotifyData(user1)
     const getData = (songName0) => {
       let data = {
         songplayes: 0,

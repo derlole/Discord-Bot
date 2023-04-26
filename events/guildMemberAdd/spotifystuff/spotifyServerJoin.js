@@ -3,7 +3,6 @@ const { permissionOverwrites, PermissionFalgsBits, ChannelType } = require("disc
 module.exports = async (member,guild, instance) => {
     console.log(member.guild.id)
     if (member.guild.id === '1089153627643449436') {
-        console.log("ahhhh")
             try {
                 const server = await guild.client.guilds.fetch('1089153627643449436');
                 const category = await server.channels.create({

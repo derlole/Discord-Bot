@@ -65,23 +65,26 @@ module.exports = {
               return data
             }
             function getDateBy12Months(dataArray, selectedDate) {
-              const resultArray = []
+              const resultArray = [];
               for (let i = 0; i < 24; i++) {
                 const startDate = new Date(selectedDate.getTime());
                 startDate.setUTCMonth(selectedDate.getMonth() + i);
                 const endDate = new Date(startDate.getTime());
-                endDate.setUTCMonth(startDate.getMonth() + 1);
-          
+            
                 if (startDate.getMonth() === 11) {
-                  startDate.setUTCFullYear(startDate.getFullYear() + 1);
+                  endDate.setUTCFullYear(startDate.getFullYear() + 1, 0, 1);
+                } else {
+                  endDate.setUTCMonth(startDate.getMonth() + 1);
                 }
-                const filteredArray = dataArray.filter(song => {
+            
+                const filteredArray = dataArray.filter((song) => {
                   const songDate = new Date(song.ts);
                   return songDate >= startDate && songDate < endDate;
                 });
-                resultArray.push(filteredArray)
+            
+                resultArray.push(filteredArray);
               }
-              return resultArray
+              return resultArray;
             }
             function formatUTCDate(dateString) {
               const date = new Date(dateString);
@@ -148,7 +151,7 @@ module.exports = {
         const streamBegin = getData(track).streamTimes.sort((a, b) => new Date(a) - new Date(b))[0]
         const data = getDateBy12Months(spotify, new Date(streamBegin))
  
-        console.log(getDataMonthly(data[20], track))
+        console.log(getDataMonthly(data[0], track))
 
         const canvas = new ChartJSNodeCanvas({
           width: 1800,
@@ -166,28 +169,32 @@ module.exports = {
               data: [getDataMonthly(data[0], track).songplayes, getDataMonthly(data[1], track).songplayes, getDataMonthly(data[2], track).songplayes, getDataMonthly(data[3], track).songplayes, getDataMonthly(data[4], track).songplayes, getDataMonthly(data[5], track).songplayes, getDataMonthly(data[6], track).songplayes, getDataMonthly(data[7], track).songplayes, getDataMonthly(data[8], track).songplayes, getDataMonthly(data[9], track).songplayes, getDataMonthly(data[10], track).songplayes, getDataMonthly(data[11], track).songplayes, getDataMonthly(data[12], track).songplayes, getDataMonthly(data[13], track).songplayes, getDataMonthly(data[14], track).songplayes, getDataMonthly(data[15], track).songplayes, getDataMonthly(data[16], track).songplayes, getDataMonthly(data[17], track).songplayes, getDataMonthly(data[18], track).songplayes, getDataMonthly(data[19], track).songplayes, getDataMonthly(data[20], track).songplayes, getDataMonthly(data[21], track).songplayes, getDataMonthly(data[22], track).songplayes, getDataMonthly(data[23], track).songplayes],
               backgroundColor: 'rgba(255, 99, 132, 0.2)',
               borderColor: 'rgba(255, 99, 132, 1)',
-              borderWidth: 1
+              borderWidth: 1,
+              tension: 0.3
             },
             {
               label: 'Skips',
               data: [getDataMonthly(data[0], track).skipped, getDataMonthly(data[1], track).skipped, getDataMonthly(data[2], track).skipped, getDataMonthly(data[3], track).skipped, getDataMonthly(data[4], track).skipped, getDataMonthly(data[5], track).skipped, getDataMonthly(data[6], track).skipped, getDataMonthly(data[7], track).skipped, getDataMonthly(data[8], track).skipped, getDataMonthly(data[9], track).skipped, getDataMonthly(data[10], track).skipped, getDataMonthly(data[11], track).skipped, getDataMonthly(data[12], track).skipped, getDataMonthly(data[13], track).skipped, getDataMonthly(data[14], track).skipped, getDataMonthly(data[15], track).skipped, getDataMonthly(data[16], track).skipped, getDataMonthly(data[17], track).skipped, getDataMonthly(data[18], track).skipped, getDataMonthly(data[19], track).skipped, getDataMonthly(data[20], track).skipped, getDataMonthly(data[21], track).skipped, getDataMonthly(data[22], track).skipped, getDataMonthly(data[23], track).skipped],
               backgroundColor: 'rgba(54, 162, 235, 0.2)',
               borderColor: 'rgba(54, 162, 235, 1)',
-              borderWidth: 1
+              borderWidth: 1,
+              tension: 0.3
             },
             {
               label: 'Offline',
               data: [getDataMonthly(data[0], track).offline, getDataMonthly(data[1], track).offline, getDataMonthly(data[2], track).offline, getDataMonthly(data[3], track).offline, getDataMonthly(data[4], track).offline, getDataMonthly(data[5], track).offline, getDataMonthly(data[6], track).offline, getDataMonthly(data[7], track).offline, getDataMonthly(data[8], track).offline, getDataMonthly(data[9], track).offline, getDataMonthly(data[10], track).offline, getDataMonthly(data[11], track).offline, getDataMonthly(data[12], track).offline, getDataMonthly(data[13], track).offline, getDataMonthly(data[14], track).offline, getDataMonthly(data[15], track).offline, getDataMonthly(data[16], track).offline, getDataMonthly(data[17], track).offline, getDataMonthly(data[18], track).offline, getDataMonthly(data[19], track).offline, getDataMonthly(data[20], track).offline, getDataMonthly(data[21], track).offline, getDataMonthly(data[22], track).offline, getDataMonthly(data[23], track).offline],
               backgroundColor: 'rgba(153, 102, 255, 0.2)',
               borderColor: 'rgba(153, 102, 255, 1)',
-              borderWidth: 1
+              borderWidth: 1,
+              tension: 0.3
             },
             {
               label: 'Shuffle',
               data: [getDataMonthly(data[0], track).shuffle, getDataMonthly(data[1], track).shuffle, getDataMonthly(data[2], track).shuffle, getDataMonthly(data[3], track).shuffle, getDataMonthly(data[4], track).shuffle, getDataMonthly(data[5], track).shuffle, getDataMonthly(data[6], track).shuffle, getDataMonthly(data[7], track).shuffle, getDataMonthly(data[8], track).shuffle, getDataMonthly(data[9], track).shuffle, getDataMonthly(data[10], track).shuffle, getDataMonthly(data[11], track).shuffle, getDataMonthly(data[12], track).shuffle, getDataMonthly(data[13], track).shuffle, getDataMonthly(data[14], track).shuffle, getDataMonthly(data[15], track).shuffle, getDataMonthly(data[16], track).shuffle, getDataMonthly(data[17], track).shuffle, getDataMonthly(data[18], track).shuffle, getDataMonthly(data[19], track).shuffle, getDataMonthly(data[20], track).shuffle, getDataMonthly(data[21], track).shuffle, getDataMonthly(data[22], track).shuffle, getDataMonthly(data[23], track).shuffle],
               backgroundColor: 'rgba(255, 206, 86, 0.2)',
               borderColor: 'rgba(255, 206, 86, 1)',
-              borderWidth: 1
+              borderWidth: 1,
+              tension: 0.3
             }
           ],
         },

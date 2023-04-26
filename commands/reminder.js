@@ -50,7 +50,6 @@ module.exports = {
     reminderTime.setSeconds(0)
     reminderTime.setMilliseconds(0)
 
-    console.log(reminderTime.getTime())
 
     interaction.reply({ content: "Reminder set!", ephemeral: true })
     setTimeout(() => {

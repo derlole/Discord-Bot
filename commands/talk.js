@@ -51,7 +51,6 @@ module.exports = {
     reminderTime.setSeconds(0)
     reminderTime.setMilliseconds(0)
       
-    console.log(reminderTime.getTime())
     interaction.reply({ content: "Talk anwesenheit aktualisiert", ephemeral: true })
       channel.send(`<@${interaction.user.id}> ist für: ${duration} im talk anwesend!`)
             if(userID){

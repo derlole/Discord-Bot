@@ -16,7 +16,6 @@ module.exports = {
     if (!role) return "Please specify a valid role ID.";
     
     if (!member) return "Please specify a valid user.";
-    console.log(member.GuildMember.user)
     await message.member.roles.add(role);
 
     return `Gave ${member.user.username} the role ${role.name}.`;

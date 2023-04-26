@@ -6,13 +6,20 @@ const getSpotifyData = require('../../Spotifydatenverhau/getSpotifyData')
 
 module.exports = {
     description: 'Give Information about an Artist',
-    type: CommandType.LEGACY,
-    minArgs: 1,
-    expectedArgs: "<artist-name>",
-    ownerOnly: true,
-    callback: ({ args, channel, guild, message }) => {
-        const user = message.author.id
-        console.log(user)
+    type: CommandType.SLASH,
+    options: [
+      {
+        name: "artist",
+        description: "give your requested artist",
+        type: 3,
+        required: true,
+      },
+    ],
+    category: "spotify stats",
+    slash: true,
+    callback:  async ({ interaction, channel, guild }) => {
+        await interaction.deferReply()
+        const user = interaction.user.id
          var spotify = getSpotifyData(user)
 
 //functions
@@ -50,14 +57,14 @@ function formatHours(milliseconds) {
 
 //der ganze rest
         const server ='1089153627643449436'
-        if(guild.id !== server && message.author.id !== '702427586822930493') return channel.send('This command is not available here')
+        if(guild.id !== server) return channel.send('This command is not available here')
         const songs = {}; 
         spotify.forEach(song => {
             if(song.master_metadata_album_artist_name) {
                 const artistName = song.master_metadata_album_artist_name.replace(/\s+/g, "-");
                 const name = song.master_metadata_track_name;
 
-                if (artistName === args[0]) {
+                if (artistName === interaction.options.getString('artist')) {
                 if (songs[name]) {
                     songs[name].played++;
                     songs[name].ms_played += song.ms_played;
@@ -77,6 +84,7 @@ function formatHours(milliseconds) {
                     }
             }}}
         });
+        const args = interaction.options.getString('artist').split(' ')
         args.forEach(artist => {
             const data = getData(artist)
             const embed = new EmbedBuilder()

@@ -1,6 +1,5 @@
 module.exports = (messageReaction, user) => {
     const test = user.id.role;
-    console.log(test)
     const guildMember = messageReaction.message.guild.members.cache.get(user.id);
             let roleName = messageReaction.message.guild.roles.cache.find(role => role.name === "Spotify-User");
             const role = messageReaction.message.guild.roles.cache.get(roleName.id);

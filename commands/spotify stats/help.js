@@ -12,7 +12,6 @@ module.exports = {
         const argument = args[0]
         const addition = args[1]
         const server ='1089153627643449436'
-        console.log(argument)
         if(guild.id === server && message.content === '!help')
         {
             const helpembed = new EmbedBuilder()

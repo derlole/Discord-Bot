@@ -18,7 +18,6 @@ function formatHours(milliseconds) {
 
 function formatUTCDate(dateString) {
   const date = new Date(dateString)
-  console.log(date)
   const options = {
     day: "numeric",
     month: "long",
@@ -187,7 +186,6 @@ const getArtistInfo = (artistName) => {
         if (song.ms_played > 0) data.playtime = data.playtime + song.ms_played
         if (song.offline) data.offline++
         if (song.shuffle) data.shuffle++
-        //console.log(song.master_metadata_track_name)
         data.streamTimes.push(song.ts)
       }
     })
@@ -213,7 +211,6 @@ const getArtistInfo = (artistName) => {
         if (song.ms_played > 0) data.playtime = data.playtime + song.ms_played
         if (song.offline) data.offline++
         if (song.shuffle) data.shuffle++
-        //console.log(song.master_metadata_track_name)
         data.streamTimes.push(song.ts)
       }
     })
@@ -223,7 +220,6 @@ const getArtistInfo = (artistName) => {
     switch (dinge) {
       case "songinfo":
         const songname = interaction.options.getString("song").replace(/\s+/g, "-")
-        console.log(songname)
         var data = getData(songname)
         var data1 = getData1(songname)
         var SI = true
@@ -253,10 +249,15 @@ const getArtistInfo = (artistName) => {
         .setFields(
             { name: "User", value: `${dude} / ${dude1}` },
             { name: "Songs Listened", value: `${data.songsListened} / ${data1.songsListened}` },
-            { name: "Skipped", value: `${data.artistSkipped} / ${data1.artistSkipped}` },
             { name: "Playtime", value: `${formatHours(data.artistPlaytime, { long: true })} / ${formatHours(data1.artistPlaytime, { long: true })}` },
-            { name: "Shuffle", value: `${data.artistShuffle} / ${data1.artistShuffle}` },
-        )
+            { name: "Skipped", value: `${data.artistSkipped} (${(data.artistSkipped/data.songsListened*100).toFixed(2)}%) / ${data1.artistSkipped} (${(data1.artistSkipped/data1.songsListened*100).toFixed(2)}%)` },           
+            { name: "Shuffle", value: `${data.artistShuffle} (${(data.artistShuffle/data.songsListened*100).toFixed(2)}%) / ${data1.artistShuffle} (${(data1.artistShuffle/data1.songsListened*100).toFixed(2)}%)` },
+            { name: "Difference", value: "diff / %diff"},
+            { name: "Songs Listened", value: `${Math.abs(data.songsListened - data1.songsListened)}`},
+            { name: "Playtime", value: `${formatHours(Math.abs(data.artistPlaytime - data1.artistPlaytime), { long: true })}` },
+            { name: "Skipped", value: `**${Math.abs(data.artistSkipped - data1.artistSkipped)}** (${Math.abs(((data.songsListened/data.artistSkipped)-(data1.songsListened/data1.artistSkipped)).toFixed(2))}%) / (${(Math.abs((data.artistSkipped/ data.songsListened * 100).toFixed(2) / (data1.artistSkipped / data1.songsListened * 100).toFixed(2))).toFixed(2)})%` },
+            { name: "Shuffle", value: `**${Math.abs(data.artistShuffle - data1.artistShuffle)}** (${Math.abs(((data.songsListened/data.artistShuffle)-(data1.songsListened/data1.artistShuffle)).toFixed(2))}%) / (${(Math.abs((data.artistShuffle/ data.songsListened * 100).toFixed(2) / (data1.artistShuffle / data1.songsListened * 100).toFixed(2))).toFixed(2)})%` },
+        ) 
         channel.send({ embeds: [artistembed] })
     }
     else if (SI) {
@@ -266,15 +267,22 @@ const getArtistInfo = (artistName) => {
       .setTitle(`Song: ${args[2]} by ${data.artist}`)
       .setColor("000000")
       .setFields(
-        { name: "User", value: `${dude} / ${dude1} / diff / %diff` },
-        { name: "Songplays", value: `${data.songplayes} / ${data1.songplayes} / ${Math.abs(data.songplayes - data1.songplayes)} /Percentual Difference: das hier is nur testtext` },
+        { name: "User", value: `${dude} / ${dude1}` },
+        { name: "Songplays", value: `${data.songplayes} / ${data1.songplayes} / ${Math.abs(data.songplayes - data1.songplayes)}` },
         { name: "Playtime", value: `${formatHours(data.playtime)} / ${formatHours(data1.playtime)}` },
         { name: "Average time Played", value: `${formatMinutes(data.playtime / data.songplayes)} / ${formatMinutes(data1.playtime / data1.songplayes)}` },
-        { name: "Skipped", value: `**${data.skipped}** (${(data.skipped / data.songplayes * 100).toFixed(2)}%) / **${data1.skipped}** (${(data1.skipped / data1.songplayes * 100).toFixed(2)}%) / **${Math.abs(data.skipped - data1.skipped)}**  (${(Math.abs((data.skipped / data.songplayes * 100).toFixed(2) - (data1.skipped / data1.songplayes * 100).toFixed(2))).toFixed(2)})% / (${(Math.abs((data.skipped / data.songplayes * 100).toFixed(2) / (data1.skipped / data1.songplayes * 100).toFixed(2))).toFixed(2)})%` },
-        { name: "Shuffle", value: `**${data.shuffle}** (${(data.shuffle / data.songplayes * 100).toFixed(2)}%) / **${data1.shuffle}** (${(data1.shuffle / data1.songplayes * 100).toFixed(2)}%) / **${Math.abs(data.shuffle - data1.shuffle)}**  (${(Math.abs((data.shuffle / data.songplayes * 100).toFixed(2) - (data1.shuffle / data1.songplayes * 100).toFixed(2))).toFixed(2)})% / (${(Math.abs((data.shuffle / data.songplayes * 100).toFixed(2) / (data1.shuffle / data1.songplayes * 100).toFixed(2))).toFixed(2)})%` },
-        { name: "Offline", value: `**${data.offline}** (${(data.offline / data.songplayes * 100).toFixed(2)}%) / **${data1.offline}** (${(data1.offline / data1.songplayes * 100).toFixed(2)}%) / **${Math.abs(data.offline - data1.offline)}**  (${(Math.abs((data.offline / data.songplayes * 100).toFixed(2) - (data1.offline / data1.songplayes * 100).toFixed(2))).toFixed(2)})% / (${(Math.abs((data.offline / data.songplayes * 100).toFixed(2) / (data1.offline / data1.songplayes * 100).toFixed(2))).toFixed(2)})%` },
+        { name: "Skipped", value: `**${data.skipped}** (${(data.skipped / data.songplayes * 100).toFixed(2)}%) / **${data1.skipped}** (${(data1.skipped / data1.songplayes * 100).toFixed(2)}%)` },
+        { name: "Shuffle", value: `**${data.shuffle}** (${(data.shuffle / data.songplayes * 100).toFixed(2)}%) / **${data1.shuffle}** (${(data1.shuffle / data1.songplayes * 100).toFixed(2)}%)` },
+        { name: "Offline", value: `**${data.offline}** (${(data.offline / data.songplayes * 100).toFixed(2)}%) / **${data1.offline}** (${(data1.offline / data1.songplayes * 100).toFixed(2)}%)` },
         { name: "Artist", value: `${data.artist} ` },
-        { name: "First Stream", value: `${formatUTCDate(sortedFirststream[0])} / ${formatUTCDate(sortedFirststream1[0])}` }
+        { name: "First Stream", value: `${formatUTCDate(sortedFirststream[0])} / ${formatUTCDate(sortedFirststream1[0])}` },
+        { name: "Difference", value: "diff / diff%"},
+        { name: "Songplays", value: `${Math.abs(data.songplayes - data1.songplayes)}`},
+        { name: "Playtime", value: `${formatHours(Math.abs(data.playtime - data1.playtime))}`},
+        { name: "Average time Played", value: `${formatMinutes(Math.abs(data.playtime / data.songplayes - data1.playtime / data1.songplayes))}`},
+        { name: "Skipped", value: `**${Math.abs(data.skipped - data1.skipped)}**  (${(Math.abs((data.skipped / data.songplayes * 100).toFixed(2) - (data1.skipped / data1.songplayes * 100).toFixed(2))).toFixed(2)})% / (${(Math.abs((data.skipped / data.songplayes * 100).toFixed(2) / (data1.skipped / data1.songplayes * 100).toFixed(2))).toFixed(2)})%`},
+        { name: "Shuffle", value: `**${Math.abs(data.shuffle - data1.shuffle)}**  (${(Math.abs((data.shuffle / data.songplayes * 100).toFixed(2) - (data1.shuffle / data1.songplayes * 100).toFixed(2))).toFixed(2)})% / (${(Math.abs((data.shuffle / data.songplayes * 100).toFixed(2) / (data1.shuffle / data1.songplayes * 100).toFixed(2))).toFixed(2)})%`},
+        { name: "Offline", value: `**${Math.abs(data.offline - data1.offline)}**  (${(Math.abs((data.offline / data.songplayes * 100).toFixed(2) - (data1.offline / data1.songplayes * 100).toFixed(2))).toFixed(2)})% / (${(Math.abs((data.offline / data.songplayes * 100).toFixed(2) / (data1.offline / data1.songplayes * 100).toFixed(2))).toFixed(2)})%`},
       )
     channel.send({ embeds: [embed] })
       }
@@ -286,14 +294,16 @@ const getArtistInfo = (artistName) => {
       .setColor("000000")
       .setFields(
         { name: "__User__", value: `${dude} / ${dude1}` },
-        { name: "Songplays", value: `${data.songplayes} / ${data1.songplayes} / ${Math.abs(data.songplayes - data1.songplayes)}` },
+        { name: "Songplays", value: `${data.songplayes} / ${data1.songplayes}` },
         { name: "Playtime", value: `${formatHours(data.playtime)} / ${formatHours(data1.playtime)}` },
-        { name: "Not Listened", value: `${data.notListened} / ${data1.notListened} / ${Math.abs(data.notListened - data1.notListened)}` },
+        { name: "Not Listened", value: `${data.notListened} / ${data1.notListened}` },
         { name: "Skipped", value: `**${data.skipped}** (${(data.skipped / data.songplayes * 100).toFixed(2)}%) / **${data1.skipped}** (${(data1.skipped / data1.songplayes * 100).toFixed(2)}%)` },
         { name: "Shuffle", value: `**${data.shuffle}** (${(data.shuffle / data.songplayes * 100).toFixed(2)}%) / **${data1.shuffle}** (${(data1.shuffle / data1.songplayes * 100).toFixed(2)}%)` },
         { name: "Offline", value: `**${data.offline}** (${(data.offline / data.songplayes * 100).toFixed(2)}%) / **${data1.offline}** (${(data1.offline / data1.songplayes * 100).toFixed(2)}%)` },
         { name: "First Stream", value: `${formatUTCDate(sortedFirststream[0])} / ${formatUTCDate(sortedFirststream1[0])}` },
         { name: "__Differences__", value: "diff / diff%" },
+        { name: "Songplays", value: `${Math.abs(data.songplayes - data1.songplayes)}`},
+        { name: "Playtime", value: `${formatHours(Math.abs(data.playtime - data1.playtime))}`},
         { name: "Playtime", value: `${formatHours(Math.abs(data.playtime - data1.playtime))}`},
         { name: "Skipped", value: ` **${Math.abs(data.skipped - data1.skipped)}**  (${Math.abs((data.skipped / data.songplayes * 100).toFixed(2) - (data1.skipped / data1.songplayes * 100).toFixed(2))})% / (${(Math.abs((data.skipped / data.songplayes * 100).toFixed(2) / (data1.skipped / data1.songplayes * 100).toFixed(2))).toFixed(2)})%`},
         { name: "Shuffle", value: `**${Math.abs(data.shuffle - data1.shuffle)}**  (${Math.abs((data.shuffle / data.songplayes * 100).toFixed(2) - (data1.shuffle / data1.songplayes * 100).toFixed(2))})% / (${(Math.abs((data.shuffle / data.songplayes * 100).toFixed(2) / (data1.shuffle / data1.songplayes * 100).toFixed(2))).toFixed(2)})%` },

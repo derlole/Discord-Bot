@@ -1,6 +1,7 @@
 const { CommandType } = require("wokcommands")
 const { EmbedBuilder, spoiler } = require('discord.js');
-
+const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
+const { AttachmentBuilder } = require('discord.js');
 const getSpotifyData = require('../../Spotifydatenverhau/getSpotifyData')
 
 
@@ -18,7 +19,11 @@ module.exports = {
     category: "spotify stats",
     slash: true,
     callback:  async ({ interaction, channel, guild }) => {
-        await interaction.deferReply()
+        try {
+            await interaction.deferReply()
+        } catch (error) {
+            console.log(error)
+        }
         const user = interaction.user.id
          var spotify = getSpotifyData(user)
 
@@ -29,6 +34,7 @@ const getData = (artistName) => {
         artistSkipped: 0,
         artistPlaytime: 0,
         artistShuffle: 0,
+        streamTimes: [],
     }
     spotify.forEach(song => {
         if (song && song.master_metadata_album_artist_name && artistName === song.master_metadata_album_artist_name.replace(/\s+/g, "-")) {
@@ -36,10 +42,52 @@ const getData = (artistName) => {
             if (song.skipped) artistData.artistSkipped++
             if (song.ms_played > 0) artistData.artistPlaytime = artistData.artistPlaytime + song.ms_played
             if (song.shuffle) artistData.artistShuffle++
+            artistData.streamTimes.push(song.ts)
         }
     })
     return artistData
 }
+const getDataMonthly = ( dataArray, artistName) => {
+    let artistData = {
+        songsListened: 0,
+        artistSkipped: 0,
+        artistPlaytime: 0,
+        artistShuffle: 0,
+        streamTimes: [],
+    }
+    dataArray.forEach(song => {
+        if (song && song.master_metadata_album_artist_name && artistName === song.master_metadata_album_artist_name.replace(/\s+/g, "-")) {
+            artistData.songsListened++
+            if (song.skipped) artistData.artistSkipped++
+            if (song.ms_played > 0) artistData.artistPlaytime = artistData.artistPlaytime + song.ms_played
+            if (song.shuffle) artistData.artistShuffle++
+            artistData.streamTimes.push(song.ts)
+        }
+    })
+    return artistData
+}
+function getDateBy12Months(dataArray, selectedDate) {
+    const resultArray = [];
+    for (let i = 0; i < 24; i++) {
+      const startDate = new Date(selectedDate.getTime());
+      startDate.setUTCMonth(selectedDate.getMonth() + i);
+      const endDate = new Date(startDate.getTime());
+  
+      if (startDate.getMonth() === 11) {
+        endDate.setUTCFullYear(startDate.getFullYear() + 1, 0, 1);
+      } else {
+        endDate.setUTCMonth(startDate.getMonth() + 1);
+      }
+  
+      const filteredArray = dataArray.filter((song) => {
+        const songDate = new Date(song.ts);
+        return songDate >= startDate && songDate < endDate;
+      });
+  
+      resultArray.push(filteredArray);
+    }
+    return resultArray;
+  }
 function formatMinutes(milliseconds) {
     if (!milliseconds) return 'no wert bruder'
     let seconds = Math.floor(milliseconds / 1000) % 60
@@ -109,56 +157,37 @@ function formatHours(milliseconds) {
                 )
                 channel.send({ embeds: [embed] })
         })
-        sortedSongs = Object.entries(songs).sort((a, b) => b[1].played - a[1].played);
-
-        const embed2 = new EmbedBuilder()
-            .setTitle(`Statistics of *hier steht irgendwann was lul`)
-            .addFields(
-                {
-                    name: `__**Top 10 Songs of ${args[0]}**__`,
-                    value:'\u200b',
+        args.forEach( async artist => {
+            const streamBegin = getData(artist).streamTimes.sort((a,b) => new Date(a) - new Date(b))[0]
+            const data = getDateBy12Months(spotify, new Date(streamBegin))
+            //console.log(data[0])
+            const canvas = new ChartJSNodeCanvas({ 
+                width: 800,
+                height: 600,
+                backgroundColor: '#ffffff',
+            });
+            const configuration = {
+                type: 'line',
+                data: {
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                    datasets: [
+                        {
+                            label: 'Songs Listened',
+                            data:  [getDataMonthly(data[0], artist).songsListened, getDataMonthly(data[1], artist).songsListened, getDataMonthly(data[2], artist).songsListened, getDataMonthly(data[3], artist).songsListened, getDataMonthly(data[4], artist).songsListened, getDataMonthly(data[5], artist).songsListened, getDataMonthly(data[6], artist).songsListened, getDataMonthly(data[7], artist).songsListened, getDataMonthly(data[8], artist).songsListened, getDataMonthly(data[9], artist).songsListened, getDataMonthly(data[10], artist).songsListened, getDataMonthly(data[11], artist).songsListened],
+                            borderColor: '#1DB954',
+                            backgroundColor: '#1DB954',
+                            fill: false,
+                            tension: 0.3,
+                            pointRadius: 0,
+                        }
+                    ]
                 },
-                {
-                    name: `${sortedSongs[0][0]}`,
-                    value: `${sortedSongs[0][1].played} plays \n${formatHours(sortedSongs[0][1].ms_played)} \n`,
-                },
-                {
-                    name: `${sortedSongs[1][0]}`,
-                    value: `${sortedSongs[1][1].played} plays \n${formatHours(sortedSongs[1][1].ms_played)} \n`,
-                },
-                {
-                    name: `${sortedSongs[2][0]}`,
-                    value: `${sortedSongs[2][1].played} plays \n${formatHours(sortedSongs[2][1].ms_played)} \n`,
-                },
-                {
-                    name: `${sortedSongs[3][0]}`,
-                    value: `${sortedSongs[3][1].played} plays \n${formatHours(sortedSongs[3][1].ms_played)} \n`,
-                },
-                {
-                    name: `${sortedSongs[4][0]}`,
-                    value: `${sortedSongs[4][1].played} plays \n${formatHours(sortedSongs[4][1].ms_played)} \n`,
-                },
-                {
-                    name: `${sortedSongs[5][0]}`,
-                    value: `${sortedSongs[5][1].played} plays \n${formatHours(sortedSongs[5][1].ms_played)}\n`,
-                },
-                {
-                    name: `${sortedSongs[6][0]}`,
-                    value: `${sortedSongs[6][1].played} plays \n${formatHours(sortedSongs[6][1].ms_played)} \n`,
-                },
-                {
-                    name: `${sortedSongs[7][0]}`,
-                    value: `${sortedSongs[7][1].played} plays \n${formatHours(sortedSongs[7][1].ms_played)} \n`,
-                },
-                {
-                    name: `${sortedSongs[8][0]}`,
-                    value: `${sortedSongs[8][1].played} plays \n${formatHours(sortedSongs[8][1].ms_played)} \n`,
-                },
-                {
-                    name: `${sortedSongs[9][0]}`,
-                    value: `${sortedSongs[9][1].played} plays \n${formatHours(sortedSongs[9][1].ms_played)} \n`,
-                },
-            )
-            channel.send({ embeds: [embed2],})
+        }
+        const image = await canvas.renderToBuffer(configuration);
+        const attachment = new AttachmentBuilder(image);
+        channel.send({ files: [attachment] });
+        })
+        
+        sortedSongs = Object.entries(songs).sort((a, b) => b[1].played - a[1].played);        
     }
 }

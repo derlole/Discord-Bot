@@ -19,7 +19,6 @@ module.exports = {
     category: "spotify stats",
     slash: true,
     callback: async ({ args, channel, guild, interaction }) => {
-      await interaction.deferReply()
 
     const user = interaction.user.id
     var spotify = getSpotifyData(user)
@@ -151,7 +150,7 @@ module.exports = {
         const streamBegin = getData(track).streamTimes.sort((a, b) => new Date(a) - new Date(b))[0]
         const data = getDateBy12Months(spotify, new Date(streamBegin))
  
-        console.log(getDataMonthly(data[0], track))
+        //console.log(getDataMonthly(data[0], track))
 
         const canvas = new ChartJSNodeCanvas({
           width: 1800,

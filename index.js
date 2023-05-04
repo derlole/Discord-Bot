@@ -43,7 +43,3 @@ client.on("ready", async () => {
 
 client.login(process.env.TOKEN || process.env["Token"])
 keepAlive()
-
-
-
-

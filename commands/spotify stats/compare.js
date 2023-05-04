@@ -30,7 +30,7 @@ function formatUTCDate(dateString) {
   return date.toLocaleDateString("de-DE", options)
 }
 module.exports = {
-  description: "Compare your Spotify Stats with Nica's",
+  description: "Compare your spotify stats with another user",
   type: CommandType.SLASH,
   options: [
     {
@@ -263,12 +263,13 @@ const getArtistInfo = (artistName) => {
     else if (SI) {
     const sortedFirststream = data.streamTimes.sort((a, b) => new Date(a) - new Date(b))
     const sortedFirststream1 = data1.streamTimes.sort((a, b) => new Date(a) - new Date(b))
+    console.log((data1.streamTimes[0]))
     const embed = new EmbedBuilder()
       .setTitle(`Song: ${args[2]} by ${data.artist}`)
       .setColor("000000")
       .setFields(
         { name: "User", value: `${dude} / ${dude1}` },
-        { name: "Songplays", value: `${data.songplayes} / ${data1.songplayes} / ${Math.abs(data.songplayes - data1.songplayes)}` },
+        { name: "Songplays", value: `${data.songplayes} / ${data1.songplayes}` },
         { name: "Playtime", value: `${formatHours(data.playtime)} / ${formatHours(data1.playtime)}` },
         { name: "Average time Played", value: `${formatMinutes(data.playtime / data.songplayes)} / ${formatMinutes(data1.playtime / data1.songplayes)}` },
         { name: "Skipped", value: `**${data.skipped}** (${(data.skipped / data.songplayes * 100).toFixed(2)}%) / **${data1.skipped}** (${(data1.skipped / data1.songplayes * 100).toFixed(2)}%)` },

@@ -9,10 +9,13 @@ module.exports = {
     expectedArgs: "",
     ownerOnly: true,
     callback: ({ args, channel, guild, message }) => {
-        //user definition
+
+
         const user = message.author.id
         var spotify = getSpotifyData(user)
-    //functions
+
+
+        
     const getData = () => {
       let data = {
         songplayes: 0,

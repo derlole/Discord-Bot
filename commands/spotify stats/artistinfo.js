@@ -26,6 +26,7 @@ module.exports = {
         }
         const user = interaction.user.id
          var spotify = getSpotifyData(user)
+        if (spotify === "error") return channel.send('Something went Wrong. Make sure your requested Artist is correct written and you handed in your Spotify Data')
 
 //functions
 const getData = (artistName) => {
@@ -179,7 +180,16 @@ function formatHours(milliseconds) {
                             fill: false,
                             tension: 0.3,
                             pointRadius: 0,
-                        }
+                        },
+                        {
+                            label: 'Skipped Songs',
+                            data:  [getDataMonthly(data[0], artist).artistSkipped, getDataMonthly(data[1], artist).artistSkipped, getDataMonthly(data[2], artist).artistSkipped, getDataMonthly(data[3], artist).artistSkipped, getDataMonthly(data[4], artist).artistSkipped, getDataMonthly(data[5], artist).artistSkipped, getDataMonthly(data[6], artist).artistSkipped, getDataMonthly(data[7], artist).artistSkipped, getDataMonthly(data[8], artist).artistSkipped, getDataMonthly(data[9], artist).artistSkipped, getDataMonthly(data[10], artist).artistSkipped, getDataMonthly(data[11], artist).artistSkipped],
+                            borderColor: '#FF0000',
+                            backgroundColor: '#FF0000',
+                            fill: false,
+                            tension: 0.3,
+                            pointRadius: 0,
+                        },
                     ]
                 },
         }

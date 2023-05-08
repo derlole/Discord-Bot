@@ -99,6 +99,14 @@ module.exports = {
               };
               return date.toLocaleDateString('de-DE', options);
             }
+            function formatUTCMonth(dateString) {
+              const date = new Date(dateString)
+              const options = {
+                month: "long",
+                year: "numeric",
+              }
+              return date.toLocaleDateString("de-DE", options)
+            }
             const getData = (songName) => {
               let data = {
                 songplayes: 0,
@@ -110,6 +118,7 @@ module.exports = {
                 shuffle: 0,
                 offline: 0,
                 artist: "",
+                inacurateSkips: 0,
                 streamTimes: [],
               }
               spotify.forEach(song => {
@@ -120,6 +129,7 @@ module.exports = {
                   if (song.ms_played > 0) data.playtime = data.playtime + song.ms_played
                   if (song.offline) data.offline++
                   if (song.shuffle) data.shuffle++
+                  if (song.skipped === null) data.inacurateSkips++
                   data.artist = song.master_metadata_album_artist_name
                   data.streamTimes.push(song.ts)
                 }
@@ -130,6 +140,7 @@ module.exports = {
       args = interaction.options.getString('song').split(" ")
       args.forEach(track  => {
         const data = getData(track)
+        console.log(data.inacurateSkips)
         const sortedStreamTimes = data.streamTimes.sort((a, b) => new Date(a) - new Date(b))
         const embed = new EmbedBuilder()
           .setTitle(`Statistics of ${track} *by ${data.artist}*`)
@@ -138,6 +149,7 @@ module.exports = {
             { name: "__Total Playtime:__", value: formatHours(data.playtime) },
             { name: "__Average Playtime:__", value: formatMinutes(data.playtime / data.songplayes) },
             { name: "__Skips:__", value: `**${data.skipped}** (${(data.skipped / data.songplayes * 100).toFixed(2)}%)` },
+            { name: "__Inacurate Skips:__", value:  (data.inacurateSkips / data.songplayes * 100).toFixed(2) + "%" },
             { name: "__Number of 0 seconds Listening:__", value: data.notListened.toString() },
             { name: "__Offline Streams:__", value: `**${data.offline}** (${(data.offline / data.songplayes * 100).toFixed(2)}%)` },
             { name: "__Shuffle Streams:__", value:  `**${data.shuffle}** (${(data.shuffle / data.songplayes * 100).toFixed(2)}%)` },
@@ -150,11 +162,10 @@ module.exports = {
       args.forEach( async track =>{
         const streamBegin = getData(track).streamTimes.sort((a, b) => new Date(a) - new Date(b))[0]
         const data = getDateBy12Months(spotify, new Date(streamBegin))
- 
-        //console.log(getDataMonthly(data[0], track))
+
 
         const canvas = new ChartJSNodeCanvas({
-          width: 1800,
+          width: 1200,
           height: 600,
           //backgroundColour: '#ffffff',
       },
@@ -162,7 +173,7 @@ module.exports = {
       const configuration = {
         type: 'line',
         data: {
-          labels: [`1 Month`, `2 Month`, `3 Month`, `4 Month`, `5 Month`, `6 Month`, `7 Month`, `8 Month`, `9 Month`, `10 Month`, `11 Month`, `12 Month`, `13 Month`, `14 Month`, `15 Month`, `16 Month`, `17 Month`, `18 Month`, `19 Month`, `20 Month`, `21 Month`, `22 Month`, `23 Month`, `24 Month`],
+          labels: [formatUTCMonth(streamBegin), formatUTCMonth(new Date(streamBegin).setUTCMonth(new Date(streamBegin).getMonth() + 1)), formatUTCMonth(new Date(streamBegin).setUTCMonth(new Date(streamBegin).getMonth() + 2)), formatUTCMonth(new Date(streamBegin).setUTCMonth(new Date(streamBegin).getMonth() + 3)), formatUTCMonth(new Date(streamBegin).setUTCMonth(new Date(streamBegin).getMonth() + 4)), formatUTCMonth(new Date(streamBegin).setUTCMonth(new Date(streamBegin).getMonth() + 5)), formatUTCMonth(new Date(streamBegin).setUTCMonth(new Date(streamBegin).getMonth() + 6)), formatUTCMonth(new Date(streamBegin).setUTCMonth(new Date(streamBegin).getMonth() + 7)), formatUTCMonth(new Date(streamBegin).setUTCMonth(new Date(streamBegin).getMonth() + 8)), formatUTCMonth(new Date(streamBegin).setUTCMonth(new Date(streamBegin).getMonth() + 9)), formatUTCMonth(new Date(streamBegin).setUTCMonth(new Date(streamBegin).getMonth() + 10)), formatUTCMonth(new Date(streamBegin).setUTCMonth(new Date(streamBegin).getMonth() + 11))],
            datasets: [
             {
               label: 'Streams',
@@ -206,7 +217,6 @@ module.exports = {
             }
           ],
         },
-        
     }
     
       const image = await canvas.renderToBuffer(configuration)

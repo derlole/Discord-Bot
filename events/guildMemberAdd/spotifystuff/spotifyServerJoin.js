@@ -1,4 +1,4 @@
-const { permissionOverwrites, PermissionFalgsBits, ChannelType } = require("discord.js");
+const { permissionOverwrites,  ChannelType } = require("discord.js");
 
 module.exports = async (member,guild, instance) => {
     console.log(member.guild.id)

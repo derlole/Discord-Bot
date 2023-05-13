@@ -68,7 +68,7 @@ module.exports = {
   ],
   category: "spotify stats",
   slash: true,
-  callback: async ({ client, interaction, args, channel, guild }) => {
+  callback: async ({ interaction, args, channel }) => {
     if (interaction.options.getString("dinge") === "songinfo" &! interaction.options.getString("song")) return interaction.reply({ content: "Please give me a song to compare", ephemeral: true })
     if (interaction.options.getString("dinge") === "artistinfo" &! interaction.options.getString("song")) return interaction.reply({ content: "Please give me a song to compare", ephemeral: true })
     //Importing the data

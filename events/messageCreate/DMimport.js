@@ -43,10 +43,4 @@ module.exports = async (message, instance) => {
     user.send(message.content)
     console.log("Nachricht an Fabi geschickt")
   }
-  //Blue
-  /*if (message.channel.id == '1081119218050809947' && message.author.username === "derlole") {
-    const user = await message.client.users.fetch('714895941269979259');
-    user.send(message.content)
-    console.log("Nachricht an Tiggy geschickt")
-  }*/
 }

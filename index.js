@@ -2,6 +2,7 @@ const { Client, IntentsBitField, Partials } = require("discord.js")
 const { DefaultCommands } = require("wokcommands")
 const WOK = require("wokcommands")
 const path = require("path")
+const mongoose = require("mongoose")
 
 require('dotenv').config()
 const keepAlive = require("./server.js")
@@ -20,6 +21,8 @@ const client = new Client({
   partials: [Partials.Channel],
 })
 
+
+
 client.on("ready", async () => {
   console.log("Ready!")
   new WOK({
@@ -29,6 +32,7 @@ client.on("ready", async () => {
     events: {
       dir: path.join(__dirname, "events"),
     },
+    mongoUri: process.env.MONGO_URI,
     testServers: [config.testServer, config.hiServer],
     botOwners: [config.ownerID, config.xyzyxID, config.guestOwnerID],
     disabledDefaultCommands: [

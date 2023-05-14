@@ -1,6 +1,8 @@
 const { EmbedBuilder } = require('discord.js');
+const cooldowns = new Set();
 
 module.exports = async (typing) => {
+    if (typing.user.bot || cooldowns.has(typing.user.tag)) return;
 
     function formatUTCDate(dateString) {
         const date = new Date(dateString);
@@ -39,4 +41,9 @@ module.exports = async (typing) => {
             }
         )
        await logChannel.send({embeds: [embed]});
+         cooldowns.add(typing.user.tag);    
+    setTimeout(() => {
+        cooldowns.delete(typing.user.tag);
+    }
+    , 60000);
 }

@@ -32,7 +32,7 @@ client.on("ready", async () => {
     events: {
       dir: path.join(__dirname, "events"),
     },
-    mongoUri: process.env.MONGO_URI,
+    //mongoUri: process.env.MONGO_URI,
     testServers: [config.testServer, config.hiServer],
     botOwners: [config.ownerID, config.xyzyxID, config.guestOwnerID],
     disabledDefaultCommands: [

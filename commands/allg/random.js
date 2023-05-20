@@ -19,7 +19,7 @@ module.exports = {
     },
     ],
   
-    callback: ({ interaction, args }) => {
+    callback: ({ interaction }) => {
       const min = interaction.options.getNumber('min');
       const max = interaction.options.getNumber('max');
 

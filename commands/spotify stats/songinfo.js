@@ -49,6 +49,7 @@ module.exports = {
                 offline: 0,
                 artist: "",
                 streamTimes: [],
+                inacurateSkips: 0,
               }
               dataArray.forEach(song => {
                 if (song && song.master_metadata_track_name && songName === song.master_metadata_track_name.replace(/\s+/g, "-")) {
@@ -60,6 +61,7 @@ module.exports = {
                   if (song.shuffle) data.shuffle++
                   data.artist = song.master_metadata_album_artist_name
                   data.streamTimes.push(song.ts)
+                  if (song.skipped === null) data.inacurateSkips++
                 }
               })
               return data
@@ -214,7 +216,17 @@ module.exports = {
               fill: false,
               tension: 0.3,
               pointRadius: 0
-            }
+            },
+            {
+              label: 'inacurateSkips',
+              data: [getDataMonthly(data[0], track).inacurateSkips, getDataMonthly(data[1], track).inacurateSkips, getDataMonthly(data[2], track).inacurateSkips, getDataMonthly(data[3], track).inacurateSkips, getDataMonthly(data[4], track).inacurateSkips, getDataMonthly(data[5], track).inacurateSkips, getDataMonthly(data[6], track).inacurateSkips, getDataMonthly(data[7], track).inacurateSkips, getDataMonthly(data[8], track).inacurateSkips, getDataMonthly(data[9], track).inacurateSkips, getDataMonthly(data[10], track).inacurateSkips, getDataMonthly(data[11], track).inacurateSkips, getDataMonthly(data[12], track).inacurateSkips, getDataMonthly(data[13], track).inacurateSkips, getDataMonthly(data[14], track).inacurateSkips, getDataMonthly(data[15], track).inacurateSkips, getDataMonthly(data[16], track).inacurateSkips, getDataMonthly(data[17], track).inacurateSkips, getDataMonthly(data[18], track).inacurateSkips, getDataMonthly(data[19], track).inacurateSkips, getDataMonthly(data[20], track).inacurateSkips, getDataMonthly(data[21], track).inacurateSkips, getDataMonthly(data[22], track).inacurateSkips, getDataMonthly(data[23], track).inacurateSkips],
+              backgroundColor: '#FF6384',
+              borderColor: '#FF6384',
+              borderWidth: 1,
+              fill: false,
+              tension: 0.3,
+              pointRadius: 0
+            },
           ],
         },
     }

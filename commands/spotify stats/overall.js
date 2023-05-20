@@ -25,6 +25,7 @@ module.exports = {
         shuffle: 0,
         offline: 0,
         streamTimes: [],
+        inacurateSkipps: 0,
         
       }
       spotify.forEach(song => {
@@ -36,6 +37,7 @@ module.exports = {
           if (song.offline) data.offline++
           if (song.shuffle) data.shuffle++
           data.streamTimes.push(song.ts)
+          if (song.skipped === null) data.inacurateSkipps++
         }
       })
       return data
@@ -111,6 +113,10 @@ module.exports = {
               {
                   name: "__Skips:__",
                   value: `**${data.skipped}** (${(data.skipped / data.songplayes * 100).toFixed(2)}%)`,
+              },
+              {
+                name: "__Inacurate Skips:__",
+                value: `**${data.inacurateSkipps}** (${(data.inacurateSkipps / data.songplayes * 100).toFixed(2)}%)`,
               },
               {
                   name: "__Number of 0 seconds Listening:__",

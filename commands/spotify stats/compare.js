@@ -98,6 +98,7 @@ module.exports = {
           if (song.ms_played > 0) data.playtime = data.playtime + song.ms_played
           if (song.offline) data.offline++
           if (song.shuffle) data.shuffle++
+          if (song.reason_end === "fwdbtn") data.skipped++
           data.artist = song.master_metadata_album_artist_name
           data.streamTimes.push(song.ts)
         }
@@ -125,6 +126,7 @@ module.exports = {
           if (song.ms_played > 0) data1.playtime = data1.playtime + song.ms_played
           if (song.offline) data1.offline++
           if (song.shuffle) data1.shuffle++
+          if (song.reason_end === "fwdbtn") data1.skipped++
           data1.artist = song.master_metadata_album_artist_name
           data1.streamTimes.push(song.ts)
         }
@@ -143,6 +145,7 @@ const getArtistInfo = (artistName) => {
       if (song && song.master_metadata_album_artist_name && artistName === song.master_metadata_album_artist_name.replace(/\s+/g, "-")) {
           artistData.songsListened++
           if (song.skipped) artistData.artistSkipped++
+          if (song.reason_end === "fwdbtn") artistData.artistSkipped++
           if (song.ms_played > 0) artistData.artistPlaytime = artistData.artistPlaytime + song.ms_played
           if (song.shuffle) artistData.artistShuffle++
       }
@@ -160,6 +163,7 @@ const getArtistInfo = (artistName) => {
         if (song && song.master_metadata_album_artist_name && artistName === song.master_metadata_album_artist_name.replace(/\s+/g, "-")) {
             artistData.songsListened++
             if (song.skipped) artistData.artistSkipped++
+            if (song.reason_end === "fwdbtn") artistData.artistSkipped++
             if (song.ms_played > 0) artistData.artistPlaytime = artistData.artistPlaytime + song.ms_played
             if (song.shuffle) artistData.artistShuffle++
         }
@@ -183,6 +187,7 @@ const getArtistInfo = (artistName) => {
         data.songplayes++
         song.skipped ? data.skipped++ : data.notSkipped++
         if (song.ms_played === 0) data.notListened++
+        if (song.reason_end === "fwdbtn") data.skipped++
         if (song.ms_played > 0) data.playtime = data.playtime + song.ms_played
         if (song.offline) data.offline++
         if (song.shuffle) data.shuffle++
@@ -208,6 +213,7 @@ const getArtistInfo = (artistName) => {
         data.songplayes++
         song.skipped ? data.skipped++ : data.notSkipped++
         if (song.ms_played === 0) data.notListened++
+        if (song.reason_end === "fwdbtn") data.skipped++
         if (song.ms_played > 0) data.playtime = data.playtime + song.ms_played
         if (song.offline) data.offline++
         if (song.shuffle) data.shuffle++

@@ -37,7 +37,8 @@ module.exports = {
           if (song.offline) data.offline++
           if (song.shuffle) data.shuffle++
           data.streamTimes.push(song.ts)
-          if (song.skipped === null) data.inacurateSkipps++
+          //if (song.skipped === null) data.inacurateSkipps++
+          if (song.reason_end === "fwdbtn") data.skipped++
         }
       })
       return data
@@ -49,7 +50,7 @@ module.exports = {
           totalPlaytime: 0,
           songsShuffle: 0,
           songsOffline: 0,
-          inacurateSkipps: 0,
+          //inacurateSkipps: 0,
           streamTimes: [],
       }
       dataArray.forEach(song => {
@@ -60,7 +61,8 @@ module.exports = {
           if (song.ms_played > 0) montData.totalPlaytime = montData.totalPlaytime + song.ms_played
           if (song.offline) montData.songsOffline++
           if (song.shuffle) montData.songsShuffle++
-          if (song.skipped === null) montData.inacurateSkipps++
+          //if (song.skipped === null) montData.inacurateSkipps++
+          if (song.reason_end === "fwdbtn") montData.songsSkipped++
           montData.streamTimes.push(song.ts)
           }
       })
@@ -114,10 +116,10 @@ module.exports = {
                   name: "__Skips:__",
                   value: `**${data.skipped}** (${(data.skipped / data.songplayes * 100).toFixed(2)}%)`,
               },
-              {
+              /*{
                 name: "__Inacurate Skips:__",
                 value: `**${data.inacurateSkipps}** (${(data.inacurateSkipps / data.songplayes * 100).toFixed(2)}%)`,
-              },
+              },*/
               {
                   name: "__Number of 0 seconds Listening:__",
                   value: data.notListened.toString(),
@@ -166,7 +168,7 @@ module.exports = {
               tension: 0.3,
               pointRadius: 0,
             },
-            {
+            /*{
               label: 'Inacurate Skipps',
               data: [getDataMonthly(datacanvas[0]).inacurateSkipps, getDataMonthly(datacanvas[1]).inacurateSkipps, getDataMonthly(datacanvas[2]).inacurateSkipps, getDataMonthly(datacanvas[3]).inacurateSkipps, getDataMonthly(datacanvas[4]).inacurateSkipps, getDataMonthly(datacanvas[5]).inacurateSkipps, getDataMonthly(datacanvas[6]).inacurateSkipps, getDataMonthly(datacanvas[7]).inacurateSkipps, getDataMonthly(datacanvas[8]).inacurateSkipps, getDataMonthly(datacanvas[9]).inacurateSkipps, getDataMonthly(datacanvas[10]).inacurateSkipps, getDataMonthly(datacanvas[11]).inacurateSkipps, getDataMonthly(datacanvas[12]).inacurateSkipps, getDataMonthly(datacanvas[13]).inacurateSkipps, getDataMonthly(datacanvas[14]).inacurateSkipps, getDataMonthly(datacanvas[15]).inacurateSkipps, getDataMonthly(datacanvas[16]).inacurateSkipps, getDataMonthly(datacanvas[17]).inacurateSkipps, getDataMonthly(datacanvas[18]).inacurateSkipps, getDataMonthly(datacanvas[19]).inacurateSkipps, getDataMonthly(datacanvas[20]).inacurateSkipps, getDataMonthly(datacanvas[21]).inacurateSkipps, getDataMonthly(datacanvas[22]).inacurateSkipps, getDataMonthly(datacanvas[23]).inacurateSkipps, getDataMonthly(datacanvas[24]).inacurateSkipps, getDataMonthly(datacanvas[25]).inacurateSkipps, getDataMonthly(datacanvas[26]).inacurateSkipps, getDataMonthly(datacanvas[27]).inacurateSkipps, getDataMonthly(datacanvas[28]).inacurateSkipps, getDataMonthly(datacanvas[29]).inacurateSkipps, getDataMonthly(datacanvas[30]).inacurateSkipps, getDataMonthly(datacanvas[31]).inacurateSkipps, getDataMonthly(datacanvas[32]).inacurateSkipps, getDataMonthly(datacanvas[33]).inacurateSkipps, getDataMonthly(datacanvas[34]).inacurateSkipps, getDataMonthly(datacanvas[35]).inacurateSkipps, getDataMonthly(datacanvas[36]).inacurateSkipps, getDataMonthly(datacanvas[37]).inacurateSkipps, getDataMonthly(datacanvas[38]).inacurateSkipps, getDataMonthly(datacanvas[39]).inacurateSkipps, getDataMonthly(datacanvas[40]).inacurateSkipps, getDataMonthly(datacanvas[41]).inacurateSkipps, getDataMonthly(datacanvas[42]).inacurateSkipps, getDataMonthly(datacanvas[43]).inacurateSkipps, getDataMonthly(datacanvas[44]).inacurateSkipps, getDataMonthly(datacanvas[45]).inacurateSkipps, getDataMonthly(datacanvas[46]).inacurateSkipps, getDataMonthly(datacanvas[47]).inacurateSkipps],
               borderColor: '#f56c42',
@@ -174,7 +176,7 @@ module.exports = {
               fill: false,
               tension: 0.3,
               pointRadius: 4,
-            }
+            }*/
           ]
         },
       };

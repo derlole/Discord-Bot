@@ -41,6 +41,7 @@ const getData = (artistName) => {
         if (song && song.master_metadata_album_artist_name && artistName === song.master_metadata_album_artist_name.replace(/\s+/g, "-")) {
             artistData.songsListened++
             if (song.skipped) artistData.artistSkipped++
+            if (song.reaaon_end === "fwwdbtn") artistData.artistSkipped++
             if (song.ms_played > 0) artistData.artistPlaytime = artistData.artistPlaytime + song.ms_played
             if (song.shuffle) artistData.artistShuffle++
             artistData.streamTimes.push(song.ts)
@@ -60,6 +61,7 @@ const getDataMonthly = ( dataArray, artistName) => {
         if (song && song.master_metadata_album_artist_name && artistName === song.master_metadata_album_artist_name.replace(/\s+/g, "-")) {
             artistData.songsListened++
             if (song.skipped) artistData.artistSkipped++
+            if (song.reaaon_end === "fwwdbtn") artistData.artistSkipped++
             if (song.ms_played > 0) artistData.artistPlaytime = artistData.artistPlaytime + song.ms_played
             if (song.shuffle) artistData.artistShuffle++
             artistData.streamTimes.push(song.ts)

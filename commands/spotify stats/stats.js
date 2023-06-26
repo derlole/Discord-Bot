@@ -70,10 +70,6 @@ module.exports = {
             name: "Percentual-shuffle",
             value: "shuffle%"
         },
-        {
-            name: "First-stream",
-            value: "first"
-        },
       ]
     },
     {
@@ -118,6 +114,7 @@ module.exports = {
                 if(song.shuffle) songs[name].shuffle++;
                 if(song.offline) songs[name].offline++;
                 if(song.skipped) songs[name].skipped++;
+                if (song.reason_end === "fwwdbtn") songs[name].skipped++;
                 songs[name].firstStream.push(song.ts);
             } else {
                 songs[name] = {

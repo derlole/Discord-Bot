@@ -59,9 +59,10 @@ module.exports = {
                   if (song.ms_played > 0) data.playtime = data.playtime + song.ms_played
                   if (song.offline) data.offline++
                   if (song.shuffle) data.shuffle++
+                  if (song.reason_end === "fwdbtn") data.skipped++
                   data.artist = song.master_metadata_album_artist_name
                   data.streamTimes.push(song.ts)
-                  if (song.skipped === null) data.inacurateSkips++
+                  //if (song.skipped === null) data.inacurateSkips++
                 }
               })
               return data
@@ -131,7 +132,8 @@ module.exports = {
                   if (song.ms_played > 0) data.playtime = data.playtime + song.ms_played
                   if (song.offline) data.offline++
                   if (song.shuffle) data.shuffle++
-                  if (song.skipped === null) data.inacurateSkips++
+                  //if (song.skipped === null) data.inacurateSkips++
+                  if (song.reason_end === "fwdbtn") data.skipped++
                   data.artist = song.master_metadata_album_artist_name
                   data.streamTimes.push(song.ts)
                 }
@@ -151,7 +153,7 @@ module.exports = {
             { name: "__Total Playtime:__", value: formatHours(data.playtime) },
             { name: "__Average Playtime:__", value: formatMinutes(data.playtime / data.songplayes) },
             { name: "__Skips:__", value: `**${data.skipped}** (${(data.skipped / data.songplayes * 100).toFixed(2)}%)` },
-            { name: "__Inacurate Skips:__", value:  (data.inacurateSkips / data.songplayes * 100).toFixed(2) + "%" },
+            /*{ name: "__Inacurate Skips:__", value:  (data.inacurateSkips / data.songplayes * 100).toFixed(2) + "%" },*/
             { name: "__Number of 0 seconds Listening:__", value: data.notListened.toString() },
             { name: "__Offline Streams:__", value: `**${data.offline}** (${(data.offline / data.songplayes * 100).toFixed(2)}%)` },
             { name: "__Shuffle Streams:__", value:  `**${data.shuffle}** (${(data.shuffle / data.songplayes * 100).toFixed(2)}%)` },
@@ -217,7 +219,7 @@ module.exports = {
               tension: 0.3,
               pointRadius: 0
             },
-            {
+            /*{
               label: 'inacurateSkips',
               data: [getDataMonthly(data[0], track).inacurateSkips, getDataMonthly(data[1], track).inacurateSkips, getDataMonthly(data[2], track).inacurateSkips, getDataMonthly(data[3], track).inacurateSkips, getDataMonthly(data[4], track).inacurateSkips, getDataMonthly(data[5], track).inacurateSkips, getDataMonthly(data[6], track).inacurateSkips, getDataMonthly(data[7], track).inacurateSkips, getDataMonthly(data[8], track).inacurateSkips, getDataMonthly(data[9], track).inacurateSkips, getDataMonthly(data[10], track).inacurateSkips, getDataMonthly(data[11], track).inacurateSkips, getDataMonthly(data[12], track).inacurateSkips, getDataMonthly(data[13], track).inacurateSkips, getDataMonthly(data[14], track).inacurateSkips, getDataMonthly(data[15], track).inacurateSkips, getDataMonthly(data[16], track).inacurateSkips, getDataMonthly(data[17], track).inacurateSkips, getDataMonthly(data[18], track).inacurateSkips, getDataMonthly(data[19], track).inacurateSkips, getDataMonthly(data[20], track).inacurateSkips, getDataMonthly(data[21], track).inacurateSkips, getDataMonthly(data[22], track).inacurateSkips, getDataMonthly(data[23], track).inacurateSkips],
               backgroundColor: '#FF6384',
@@ -226,7 +228,7 @@ module.exports = {
               fill: false,
               tension: 0.3,
               pointRadius: 0
-            },
+            },*/
           ],
         },
     }

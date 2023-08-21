@@ -144,7 +144,6 @@ module.exports = {
       args = interaction.options.getString('song').split(" ")
       args.forEach(track  => {
         const data = getData(track)
-        console.log(data.inacurateSkips)
         const sortedStreamTimes = data.streamTimes.sort((a, b) => new Date(a) - new Date(b))
         const embed = new EmbedBuilder()
           .setTitle(`Statistics of ${track} *by ${data.artist}*`)
@@ -219,16 +218,6 @@ module.exports = {
               tension: 0.3,
               pointRadius: 0
             },
-            /*{
-              label: 'inacurateSkips',
-              data: [getDataMonthly(data[0], track).inacurateSkips, getDataMonthly(data[1], track).inacurateSkips, getDataMonthly(data[2], track).inacurateSkips, getDataMonthly(data[3], track).inacurateSkips, getDataMonthly(data[4], track).inacurateSkips, getDataMonthly(data[5], track).inacurateSkips, getDataMonthly(data[6], track).inacurateSkips, getDataMonthly(data[7], track).inacurateSkips, getDataMonthly(data[8], track).inacurateSkips, getDataMonthly(data[9], track).inacurateSkips, getDataMonthly(data[10], track).inacurateSkips, getDataMonthly(data[11], track).inacurateSkips, getDataMonthly(data[12], track).inacurateSkips, getDataMonthly(data[13], track).inacurateSkips, getDataMonthly(data[14], track).inacurateSkips, getDataMonthly(data[15], track).inacurateSkips, getDataMonthly(data[16], track).inacurateSkips, getDataMonthly(data[17], track).inacurateSkips, getDataMonthly(data[18], track).inacurateSkips, getDataMonthly(data[19], track).inacurateSkips, getDataMonthly(data[20], track).inacurateSkips, getDataMonthly(data[21], track).inacurateSkips, getDataMonthly(data[22], track).inacurateSkips, getDataMonthly(data[23], track).inacurateSkips],
-              backgroundColor: '#FF6384',
-              borderColor: '#FF6384',
-              borderWidth: 1,
-              fill: false,
-              tension: 0.3,
-              pointRadius: 0
-            },*/
           ],
         },
     }

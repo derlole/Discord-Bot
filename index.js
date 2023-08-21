@@ -33,7 +33,7 @@ client.on("ready", async () => {
     events: {
       dir: path.join(__dirname, "events"),
     },
-    testServers: [config.testServer, config.hiServer],
+    testServers: [config.testServer, config.hiServer, '1125432139895279676', '943955705545760788'],
     botOwners: [config.ownerID, config.xyzyxID, config.guestOwnerID],
     disabledDefaultCommands: [
       DefaultCommands.ChannelCommand,

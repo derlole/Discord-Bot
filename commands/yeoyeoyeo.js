@@ -1,5 +1,5 @@
 const { CommandType } = require("wokcommands")
-const { EmbedBuilder, embedLength } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 
 module.exports = {

@@ -104,8 +104,8 @@ module.exports = {
         interaction.deferReply()
         const server ='1089153627643449436'
         if(guild.id !== server) return channel.send('This command is not available here')
+        
         const songs = {}; 
-
         spotify.forEach(song => {
             const name = song.master_metadata_track_name;
             if (songs[name]) {

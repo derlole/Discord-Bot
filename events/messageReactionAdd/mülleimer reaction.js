@@ -1,4 +1,4 @@
-module.exports = async (messageReaction, user, instance) => {
+module.exports = async (messageReaction, user) => {
   if (user.bot) return; 
   if (messageReaction.emoji.name === '🗑️') {
     try {

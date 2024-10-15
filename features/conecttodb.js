@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+/*const mongoose = require('mongoose');
 
 module.exports =  async () => {
     (async () => {
@@ -7,4 +7,4 @@ module.exports =  async () => {
         console.log('Connected to daadebang!');
     })
     ().catch((err) => console.error(err));
-}
+}*/

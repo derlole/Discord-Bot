@@ -1,4 +1,4 @@
-const config = require('../../../config.json')
+const config = require('../../config.json')
 const { inspect } = require('util')
 
 module.exports = (message) => {

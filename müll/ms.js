@@ -1,4 +1,4 @@
-const { CommandType } = require('wokcommands');
+/*const { CommandType } = require('wokcommands');
 const Game = require('../../schemas/game');
 const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
 const { AttachmentBuilder } = require('discord.js');
@@ -162,4 +162,4 @@ callback: async ({interaction }) => {
       files: [attachment]
     });
   },
-} 
+} */

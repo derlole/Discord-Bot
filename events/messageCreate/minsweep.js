@@ -9,7 +9,7 @@ module.exports = (message) => {
             if (match) {
                 const firstNumber = parseInt(match[1], 10);
                 const secondNumber = parseInt(match[2], 10);
-                message.reply(`Current: ${(99-firstNumber)/secondNumber}\nRecord: ${99/125}\nReference: ${(99/125)-(99-firstNumber)/secondNumber}`);
+                message.reply(`Current: ${(99-firstNumber)/secondNumber}\nRecord: ${99/125}\nReference: ${(99/125)-(99-firstNumber)/secondNumber}\n${((99-firstNumber)/secondNumber)/(99/125)*100}%`);
                 const game = new Game({
                     time: secondNumber,
                     bombsLeft: firstNumber

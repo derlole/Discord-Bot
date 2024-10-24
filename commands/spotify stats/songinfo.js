@@ -171,8 +171,7 @@ module.exports = {
           width: 1200,
           height: 600,
           //backgroundColour: '#ffffff',
-      },
-      )
+        })
       const configuration = {
         type: 'line',
         data: {

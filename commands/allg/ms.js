@@ -29,6 +29,7 @@ module.exports = {
     }
   ],
 callback: async ({interaction }) => {
+  console.log("uwu");
   let chartConfig
   await interaction.deferReply({ ephemeral: true })
     const games = await Game.find({});

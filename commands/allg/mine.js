@@ -2,6 +2,9 @@ const { CommandType } = require('wokcommands');
 const Game = require('../../schemas/game');
 const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
 const { AttachmentBuilder } = require('discord.js');
+const regression = require('regression');
+const { console } = require('inspector');
+
 
 module.exports = {
   description: "Wichtig",
@@ -30,16 +33,25 @@ module.exports = {
   ],
 callback: async ({interaction }) => {
   let chartConfig
+  let regressionData
   await interaction.deferReply({ ephemeral: true })
     const games = await Game.find({});
     const times = games.map(game => game.time);
     const bombs = games.map(game => game.bombsLeft);
     var values =[];
+    let func
     for (let i = 0; i < times.length; i++) {
         values.push((99-bombs[i])/times[i])
     }
+    const stackedForRegressiontb = games.map( game => [game.bombsLeft, game.time]);
+    const stackedForRegressionvt = games.map( (game, i) => [values[i], game.time]);
+    const stackedForRegressionvb = games.map( (game, i) => [values[i], game.bombsLeft]);
+    console.log("stackedForRegressionvb");
     switch (interaction.options.getString('diagrammart')) {
       case 'time-bombs':
+        regressionData = regression.linear(stackedForRegressiontb, { precision: 15 });
+        regressionPoints = regressionData.points;
+        func = regressionData.string;
         chartConfig = {
           type: 'scatter',
           data: {
@@ -51,6 +63,14 @@ callback: async ({interaction }) => {
               })),
               
               backgroundColor: 'red'
+            },
+            {
+              label: 'Regression',
+              data: regressionPoints.map(point => ({
+                x: point[0],
+                y: point[1]
+              })),
+              backgroundColor: 'blue'
             }
           ]
             
@@ -75,6 +95,9 @@ callback: async ({interaction }) => {
         }
         break;
       case 'value-time':
+        regressionData = regression.polynomial(stackedForRegressionvt, { order: 3 });
+        regressionPoints = regressionData.points;
+        func = regressionData.string;
         chartConfig = {
           type: 'scatter',
           data: {
@@ -86,6 +109,14 @@ callback: async ({interaction }) => {
               })),
               
               backgroundColor: 'red'
+            },
+            {
+              label: 'Regression',
+              data: regressionPoints.map(point => ({
+                x: point[0],
+                y: point[1]
+              })),
+              backgroundColor: 'blue'
             }
           ]
             
@@ -110,6 +141,9 @@ callback: async ({interaction }) => {
         }
         break;
       case 'value-bombs':
+        regressionData = regression.polynomial(stackedForRegressionvb, { order: 5 });
+        regressionPoints = regressionData.points;
+        func = regressionData.string;
         chartConfig = {
           type: 'scatter',
           data: {
@@ -121,6 +155,14 @@ callback: async ({interaction }) => {
               })),
               
               backgroundColor: 'red'
+            },
+            {
+              label: 'Regression',
+              data: regressionPoints.map(point => ({
+                x: point[0],
+                y: point[1]
+              })),
+              backgroundColor: 'blue'
             }
           ]
             
@@ -157,7 +199,7 @@ callback: async ({interaction }) => {
     const image = await canvas.renderToBuffer(chartConfig);
     const attachment = new AttachmentBuilder(image);
     await interaction.editReply({
-      content: 'Hier ist dein Diagramm:',
+      content: 'Hier ist dein Diagramm:' + func,
       files: [attachment]
     });
   },

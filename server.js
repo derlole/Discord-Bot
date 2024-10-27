@@ -6,7 +6,7 @@ server.all(`/`, (req, res) => {
 });
 
 function keepAlive() {
-  server.listen(3000, () => {
+  server.listen(3010, () => {
     console.log(`Server is now ready! | ` + Date.now());
   });
 }

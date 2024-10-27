@@ -49,7 +49,7 @@ callback: async ({interaction }) => {
     console.log("stackedForRegressionvb");
     switch (interaction.options.getString('diagrammart')) {
       case 'time-bombs':
-        regressionData = regression.linear(stackedForRegressiontb, { precision: 15 });
+        regressionData = regression.polynomial(stackedForRegressiontb, { precision: 15, order: 3 });
         regressionPoints = regressionData.points;
         func = regressionData.string;
         chartConfig = {
@@ -178,7 +178,7 @@ callback: async ({interaction }) => {
                 y: {
                     title: {
                         display: true,
-                        text: 'Time (in seconds)' 
+                        text: 'Bombs left' 
                     },
                     beginAtZero: true 
                 }

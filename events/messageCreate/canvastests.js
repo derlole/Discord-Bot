@@ -1,4 +1,4 @@
-const { createCanvas, loadImage } = require('canvas');
+const { createCanvas } = require('canvas');
 const { AttachmentBuilder } = require('discord.js');
 
 module.exports = async (message) => {
@@ -32,12 +32,10 @@ module.exports = async (message) => {
             ctx.fillText(i+1 , offset / 2, offset + i * cellSize + cellSize / 2);
         }
 
-        // Oben die Buchstaben A bis H
         for (let i = 0; i < 8; i++) {
             ctx.fillText(String.fromCharCode(65 + i), offset + i * cellSize + cellSize / 2, offset / 2);
         }
 
-        // Speichere das Bild in einem Buffer und sende es als Anhang
         const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: 'grid.png' });
         await message.reply({ files: [attachment] });
 }

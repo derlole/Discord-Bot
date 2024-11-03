@@ -46,7 +46,9 @@ callback: async ({interaction }) => {
     const stackedForRegressiontb = games.map( game => [game.bombsLeft, game.time]);
     const stackedForRegressionvt = games.map( (game, i) => [values[i], game.time]);
     const stackedForRegressionvb = games.map( (game, i) => [values[i], game.bombsLeft]);
-    console.log("stackedForRegressionvb");
+
+
+    console.log(" ");
     switch (interaction.options.getString('diagrammart')) {
       case 'time-bombs':
         regressionData = regression.linear(stackedForRegressiontb, { precision: 15});

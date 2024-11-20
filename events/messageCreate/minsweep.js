@@ -47,16 +47,17 @@ module.exports = async(message) => {
                 }else{
                     backFunctb = "You are exactly on the regression line from the tb-Graph. Therefore you are exactly on the average expection of a game. (error)";
                 }
-                if (valueRefrFuncvt > firstNumber){
+                if (valueRefrFuncvt > secondNumber){
                     backFuncvt = "You are below the regression line from the vt-Graph.";
-                }else if(valueRefrFuncvt < firstNumber){
+                }else if(valueRefrFuncvt < secondNumber){
                     backFuncvt = "You are above the regression line from the vt-Graph.";
                 }else{
                     backFuncvt = "You are exactly on the regression line from the vt-Graph. (error)";
                 }
-                if (valueRefrFuncvb > current){
+                console.log(valueRefrFuncvb, firstNumber);
+                if (valueRefrFuncvb > firstNumber){
                     backFuncvb = "You are below the regression line from the vb-Graph.";
-                }else if(valueRefrFuncvb < current){
+                }else if(valueRefrFuncvb < firstNumber){
                     backFuncvb = "You are above the regression line from the vb-Graph.";
                 }else{
                     backFuncvb = "You are exactly on the regression line from the vb-Graph. (error)";

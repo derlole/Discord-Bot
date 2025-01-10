@@ -8,7 +8,7 @@ module.exports = async(message) => {
             const regex = /^(\d+)\/(\d+)$/;
             const match = message.content.match(regex);
             const games = await Game.find({});
-            const record = 99/116;
+            const record = 99/105;
         
             if (match) {
                 const firstNumber = parseInt(match[1], 10);

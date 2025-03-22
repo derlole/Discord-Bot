@@ -136,7 +136,7 @@ async function sendServerStatus(client) {
 function scheduleTask(client) {
   setInterval(async () => {
     const now = new Date();
-    console.log(`Aktuelle Uhrzeit: ${now.getHours()}:${now.getMinutes()}`);
+    //console.log(`Aktuelle Uhrzeit: ${now.getHours()}:${now.getMinutes()}`);
     if ([7, 17].includes(now.getHours()) && now.getMinutes() === 0) {
       await sendServerStatus(client);
     }

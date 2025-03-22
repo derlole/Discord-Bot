@@ -3,6 +3,7 @@ const { DefaultCommands } = require("wokcommands")
 const WOK = require("wokcommands")
 const path = require("path")
 const mongoose = require("mongoose")
+const fs = require("fs")  // Hier fügen wir fs für das Logging hinzu
 
 require('dotenv').config()
 const keepAlive = require("./server.js")
@@ -23,9 +24,43 @@ const client = new Client({
   partials: [Partials.Channel],
 })
 
+function getEventFiles(dir) {
+  let eventFiles = [];
+  const files = fs.readdirSync(dir);
 
+  files.forEach(file => {
+    const filePath = path.join(dir, file);
+    if (fs.statSync(filePath).isDirectory()) {
+      // Wenn es ein Ordner ist, rekursiv den Ordner durchsuchen
+      eventFiles = eventFiles.concat(getEventFiles(filePath));
+    } else if (file.endsWith(".js")) {
+      // Wenn es eine .js-Datei ist, zum Event-Array hinzufügen
+      eventFiles.push(filePath);
+    }
+  });
+
+  return eventFiles;
+}
 client.on("ready", async () => {
   console.log("Ready!")
+  /*
+  const eventFilesPath = path.join(__dirname, "events");
+  const eventFiles = getEventFiles(eventFilesPath);
+  console.log("Geladene Event-Dateien:", eventFiles);
+
+  eventFiles.forEach(file => {
+    const event = require(file);
+    const eventName = path.basename(file, ".js");  
+
+    if (typeof event === 'function') {
+      client.on(eventName, event);
+      console.log(`Event "${eventName}" erfolgreich geladen.`);
+    } else {
+      console.log(`Fehler: Event "${eventName}" ist keine Funktion!`);
+    }
+  });
+*/
+
   new WOK({
     client,
     commandsDir: path.join(__dirname, "commands"),

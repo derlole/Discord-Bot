@@ -20,11 +20,16 @@
     "debug": "^4.3.7",
     "discord.js": "^14.16.3",
     "dotenv": "^16.4.5",
+    "eslint": "^9.23.0",
     "express": "^4.21.1",
     "mongoose": "^7.8.2",
-    "node-fetch": "^3.3.2",
+    "node-fetch": "^2.7.0",
     "nodemon": "^3.1.7",
+    "os": "^0.1.2",
+    "os-utils": "^0.0.14",
+    "pm2": "^6.0.5",
     "regression": "^2.0.1",
+    "systeminformation": "^5.25.11",
     "wokcommands": "^2.1.9"
   }
 }

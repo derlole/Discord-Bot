@@ -77,6 +77,10 @@ async function getServerInfo() {
         wlanStatus = "🟢 Aktiv"
         netDevice = os.networkInterfaces()["eth0"]
       }
+      else if(os.networkInterfaces()["wlp58s0"] ) {
+        wlanStatus = "🟢 Aktiv"
+        netDevice = os.networkInterfaces()["wlp58s0"]
+      }
       else {
         wlanStatus = "🔴 Aus"
       };

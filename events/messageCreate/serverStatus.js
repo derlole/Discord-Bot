@@ -21,17 +21,14 @@ async function getSystemInfo() {
     const network = await si.networkInterfaces();
 
     return(`
-**System Information:**
+  **CPU**: ${cpu.manufacturer} ${cpu.brand}
+  **CPU Temperatur**: ${cpuTemp.main ? cpuTemp.main : "Nicht verfügbar"} °C
+  **RAM**: ${(memory.total / (1024 ** 3)).toFixed(2)} GB
+  **Festplatte**: ${(disk[0].used / (1024 ** 3)).toFixed(2)} GB verwendet von ${(disk[0].size / (1024 ** 3)).toFixed(2)} GB
+  **Betriebssystem**: ${os.distro} ${os.release}
+  **Netzwerk-Interfaces:**
+  ${network.map((iface) => `- ${iface.iface}: ${iface.ip4 || 'Nicht verbunden'}`).join('\n')}`);
 
-**CPU**: ${cpu.manufacturer} ${cpu.brand}
-**CPU Temperatur**: ${cpuTemp.main ? cpuTemp.main : "Nicht verfügbar"} °C
-**RAM**: ${(memory.total / (1024 ** 3)).toFixed(2)} GB
-**Festplatte**: ${(disk[0].used / (1024 ** 3)).toFixed(2)} GB verwendet von ${(disk[0].size / (1024 ** 3)).toFixed(2)} GB
-**Betriebssystem**: ${os.distro} ${os.release}
-
-**Netzwerk-Interfaces:**
-${network.map((iface) => `  - ${iface.iface}: ${iface.ip4 || 'Nicht verbunden'}`).join('\n')}
-`);
   } catch (error) {
     console.error('Fehler beim Abrufen von Systeminformationen:', error);
   }
@@ -112,19 +109,20 @@ async function getServerInfo() {
         
         **Uptime**: ${uptime.toFixed(2)} Stunden
         
-        ---
+        **Webserver**: ${webStatus}
+        ----------------------------------------------------
         
         **System Information:**
         ${sysInfo}
         
-        ---
+        ----------------------------------------------------
         
         **PM2-Instanzen:**
         ${pm2Info}
         
-        ---
+        ----------------------------------------------------
         
-        **Webserver**: ${webStatus}
+
         `);
         
     });

@@ -53,9 +53,9 @@ async function getPm2Info() {
         const pm2Info = processList.map((proc) => {
           return `
   **${proc.name}**:
-    - Status: ${proc.pm2_env.status}
-    - CPU Nutzung: ${(proc.monit.cpu).toFixed(2)}%
-    - RAM Nutzung: ${(proc.monit.memory / (1024 ** 2)).toFixed(2)} MB
+- Status: ${proc.pm2_env.status}
+- CPU Nutzung: ${(proc.monit.cpu).toFixed(2)}%
+- RAM Nutzung: ${(proc.monit.memory / (1024 ** 2)).toFixed(2)} MB
   `;
         }).join('\n');
 

@@ -29,7 +29,7 @@ async function getSystemInfo() {
 **Betriebssystem**: ${os.distro} ${os.release}
 
 **Netzwerk-Interfaces:**
-${network.map((iface) => `  - ${iface.iface}: ${iface.ip4 || 'Nicht verbunden'}`).join('\n')}
+${network.map((iface) => `- ${iface.iface}: ${iface.ip4 || 'Nicht verbunden'}`).join('\n')}
 `);
   } catch (error) {
     console.error('Fehler beim Abrufen von Systeminformationen:', error);
@@ -77,9 +77,9 @@ async function getServerInfo() {
       if (os.networkInterfaces()["wlan0"]) {
         wlanStatus = "🟢 Aktiv";
         netDevice = os.networkInterfaces()["wlan0"];
-      } else if (os.networkInterfaces()["eth0"]) {
+      } else if (os.networkInterfaces()["enp0s31f6"]) {
         wlanStatus = "🟢 Aktiv";
-        netDevice = os.networkInterfaces()["eth0"];
+        netDevice = os.networkInterfaces()["enp0s31f6"];
       } else if (os.networkInterfaces()["wlp58s0"]) {
         wlanStatus = "🟢 Aktiv";
         netDevice = os.networkInterfaces()["wlp58s0"];
@@ -137,7 +137,7 @@ function scheduleTask(client) {
   setInterval(async () => {
     const now = new Date();
     //console.log(`Aktuelle Uhrzeit: ${now.getHours()}:${now.getMinutes()}`);
-    if ([7, 17].includes(now.getHours()) && now.getMinutes() === 0) {
+    if ([7, 19].includes(now.getHours()) && now.getMinutes() === 0) {
       await sendServerStatus(client);
     }
   }, 60 * 1000);

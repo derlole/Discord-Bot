@@ -77,9 +77,9 @@ async function getServerInfo() {
       if (os.networkInterfaces()["wlan0"]) {
         wlanStatus = "🟢 Aktiv";
         netDevice = os.networkInterfaces()["wlan0"];
-      } else if (os.networkInterfaces()["eth0"]) {
+      } else if (os.networkInterfaces()["enp0s31f6"]) {
         wlanStatus = "🟢 Aktiv";
-        netDevice = os.networkInterfaces()["eth0"];
+        netDevice = os.networkInterfaces()["enp0s31f6"];
       } else if (os.networkInterfaces()["wlp58s0"]) {
         wlanStatus = "🟢 Aktiv";
         netDevice = os.networkInterfaces()["wlp58s0"];

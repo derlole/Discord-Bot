@@ -77,7 +77,7 @@ module.exports = async (message) => {
         
         }else if( message.content === "!omd") {
             Omd.create({ ts: new Date() })
-            .then(() => console.log("Coffee record created"))
+            .then(() => console.log("Omd record created"))
             const twoHoursLater = new Date(Date.now() + 2 * 60 * 60 * 1000);
             const formatted = twoHoursLater.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
             const dateformatted = twoHoursLater.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
@@ -90,6 +90,7 @@ module.exports = async (message) => {
             if (valoMode) {
                 message.reply("Valo Mode ist jetzt **aktiviert**!");
             }else {
+                message.reply(`Neue Runde gestartet! In der Runde davor hat Benji ${roundCounter}mal "Oh my days" gesagt. :)`);
                 message.reply("Valo Mode ist jetzt **deaktiviert**!");
             }
         }else if( message.content === "!newRound"){

@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-
 const coffeeSchema = new mongoose.Schema({
     ts: {
       type: Date,

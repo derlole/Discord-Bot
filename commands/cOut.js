@@ -42,13 +42,12 @@ module.exports = {
             // Nutzer nach Durchschnitt aufsteigend sortieren (niedrigste zuerst)
             const sorted = Object.entries(userAverages)
                 .sort((a, b) => a[1] - b[1])
-                .slice(0, 3);
+                .slice(0, 100);
 
             // Top 3 Nutzer formatieren
             const result = sorted.map(([user, avg], i) => `${i + 1}. ${'<@'+ user + '>'}: ${avg.toFixed(2)}`).join('\n');
 
-            channel.send(`Top 3 Nutzer mit niedrigstem Durchschnitt:\n${result}`);
-            channel.send(`Gefundene Einträge für #${n}: ${entries.length}`);
+            channel.send(`${result}`);
 
 
 
